@@ -1,0 +1,43 @@
+{
+  "name": "express-ws",
+  "version": "1.0.0",
+  "description": "tdd with express",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "jest --watch",
+    "lint": "eslint ."
+  },
+  "author": "Fred Wills",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "rules": {
+      "semi": "warn",
+      "quotes": [
+        "warn",
+        "single"
+      ],
+      "eqeqeq": "warn"
+    }
+  }
+}
