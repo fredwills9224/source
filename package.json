@@ -4,20 +4,22 @@
   "description": "tdd with express",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon index",
-    "test": "jest --watch --colors",
+    "start": "cross-env NODE_ENV=development nodemon index",
+    "test": "cross-env NODE_ENV=test jest --watch --colors",
     "lint": "eslint ."
   },
   "author": "Fred Wills",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "config": "^3.3.7",
     "express": "^4.17.2",
     "sequelize": "^6.15.0",
     "sqlite3": "^5.0.0",
     "tar": "^6.1.9"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.8.0",
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",

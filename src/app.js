@@ -10,5 +10,6 @@ const UserRouter = require('./user/UserRouter');
 // connecting [router]
     app.use(UserRouter);
 // connecting [router]
+console.log('env: ' + process.env.NODE_ENV);
 
 module.exports = app;
