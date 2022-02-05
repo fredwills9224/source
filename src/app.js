@@ -1,16 +1,34 @@
 const express = require('express');
 const User = require('./user/User');
-const app = express();
+const bcrypt = require('bcrypt');
 
-// json body parser
+// initializing [app]'s server
+    const app = express();
+// initializing [app]'s server
+// initializing json body parser
     app.use(express.json());
-// json body parser
-// handling the [app.post] [req]uest to ['/api/1.0/users'] endpoint
+// initializing json body parser
+// handling ['/api/1.0/users'] endpoint
     app.post('/api/1.0/users', (req, res)=>{
-        User.create(req.body).then(()=>{
-            return res.send({message: 'User created'});
-        });
+        
+        // hashing [req.body.password] and [then] saving [user]
+            bcrypt.hash(req.body.password, 10).then((hash)=>{
+                
+                // saving [user] in [User]'s table
+                    const user = {
+                        username: req.body.username,
+                        email: req.body.email,
+                        password: hash
+                    };
+                    User.create(user).then(()=>{
+                        return res.send({message: 'User created'});
+                    });
+                // saving [user] in [User]'s table
+
+            });
+        // hashing [req.body.password] and [then] saving [user]
+
     });
-// handling the [app.post] [req]uest to ['/api/1.0/users'] endpoint
+// handling ['/api/1.0/users'] endpoint
 
 module.exports = app;

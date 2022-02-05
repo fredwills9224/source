@@ -6,7 +6,6 @@ const sequelize = require('../src/config/database');
 beforeAll(()=>{
     return sequelize.sync();
 });
-
 beforeEach(()=>{
     return User.destroy({ truncate: true });            
 });
@@ -95,7 +94,7 @@ describe('User Registration', ()=>{
             User.findAll().then((userList)=>{
 
                 const savedUser = userList[0];
-                expect(savedUser.password).toBe('user1password');
+                expect(savedUser.password).not.toBe('user1password');
                 done();
 
             });
