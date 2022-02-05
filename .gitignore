@@ -2,3 +2,4 @@ node_modules
 locales
 database.sqlite
 test.sqlite
+coverage
