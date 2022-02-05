@@ -7,7 +7,7 @@ const UserService = require('./UserService');
         
         const user = req.body;
         if(user.username === null){
-            res.status(400).send();
+            return res.status(400).send();
         }
         await UserService.save(req.body);
         return res.send({ message: 'User created' });
