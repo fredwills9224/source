@@ -51,10 +51,12 @@ describe('User Registration', ()=>{
             email: 'user1@mail.com',
             password: 'user1password'
             }).then(()=>{
+
                 User.findAll().then((userList)=>{
                     expect(userList.length).toBe(1);
                     done();
                 });
+
             })
     
         ;
@@ -69,15 +71,36 @@ describe('User Registration', ()=>{
             password: 'user1password'
             }).then(()=>{
                 User.findAll().then((userList)=>{
+
                     const savedUser = userList[0];
                     expect(savedUser.username).toBe('user1');
                     expect(savedUser.email).toBe('user1@mail.com');
                     done();
+
                 });
             })
     
         ;
     
+    });
+    it('it hashes the password in database', (done)=>{
+        
+        request(app).post('/api/1.0/users').send({
+
+            username: 'user1',
+            email: 'user1@email.com',
+            password: 'user1password'
+
+        }).then(()=>{
+            User.findAll().then((userList)=>{
+
+                const savedUser = userList[0];
+                expect(savedUser.password).not.toBe('user1password');
+                done();
+
+            });
+        });
+
     });
 
 });
