@@ -68,6 +68,17 @@ describe('User Registration', ()=>{
             expect(response.status).toBe(400);
 
         });
+        it('returns validationErrorrs field in response body when error occurs', async ()=>{
+
+            const response = await postUser({
+                username: null,
+                email: 'user1@mail.com',
+                password: 'user1password'
+            });
+            const body = response.body;
+            expect(body.validationErrors).not.toBeUndefined();
+
+        });
 
     // Invalid post [req]uests
 
