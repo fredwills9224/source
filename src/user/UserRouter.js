@@ -4,8 +4,14 @@ const UserService = require('./UserService');
 
 // [User.create()]
     router.post('/api/1.0/users', async(req, res)=>{
+        
+        const user = req.body;
+        if(user.username === null){
+            res.status(400).send();
+        }
         await UserService.save(req.body);
         return res.send({ message: 'User created' });
+
     });
 // [User.create()]
 
