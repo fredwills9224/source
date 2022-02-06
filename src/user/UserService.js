@@ -8,6 +8,10 @@ const bcrypt = require('bcrypt');
         await User.create(user);
     };
 // [save]s [user] with [hashedPassword]
+// finds [user] by email
+    const findByEmail = async (email)=>{
+        return await User.findOne({ where: { email: email } });
+    };
+// finds [user] by email
 
-
-module.exports = { save };
+module.exports = { save, findByEmail };
