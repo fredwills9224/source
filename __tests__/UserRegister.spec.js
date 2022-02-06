@@ -90,13 +90,13 @@ describe('User Registration', ()=>{
             expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
 
         });
-        // dynamic test with 2 dimensional array
-
-            it.each([
-                    ['username', 'Username cannot be null'],
-                    ['email', 'E-mail cannot be null'],
-                    ['password', 'Password cannot be null']
-                ])('when %s is null %s is received', async (field, expectedMessage)=>{
+        // dynamic test with pipe columns
+            it.each`
+                    field | expectedMessage
+                    ${'username'} | ${'Username cannot be null'}
+                    ${'email'} | ${'E-mail cannot be null'}
+                    ${'password'} | ${'Password cannot be null'} 
+                `('returns  $expectedMessage when $field is null', async ({ field, expectedMessage })=>{
 
                 const user = {
                     username: 'user1',
@@ -109,8 +109,7 @@ describe('User Registration', ()=>{
                 expect(body.validationErrors[field]).toBe(expectedMessage);
 
             });
-
-        // dynamic test with 2 dimensional array
+        // dynamic test with pipe columns
 
     // Invalid post [req]uests
 
