@@ -90,6 +90,7 @@ describe('User Registration', ()=>{
             expect(body.validationErrors.username).toBe('Username cannot be null');
 
         });
+        
 
     // Invalid post [req]uests
 
