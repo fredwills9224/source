@@ -20,7 +20,13 @@ const { check, validationResult } = require('express-validator');
             .isEmail()
             .withMessage('E-mail is not valid')
         ,
-        check('password').notEmpty().withMessage('Password cannot be null'), 
+        check('password')
+            .notEmpty()
+            .withMessage('Password cannot be null')
+            .bail()
+            .isLength({ min: 6 })
+            .withMessage('Password must be at least 6 characters')
+        , 
         async (req, res)=>{
     
         const errors = validationResult(req);
