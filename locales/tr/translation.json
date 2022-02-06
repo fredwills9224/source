@@ -2,9 +2,10 @@
   "username_null": "Kullanici adi bos olamaz",
   "username_size": "En az 4 en fazla 32 karakter olamali",
   "email_null": "E-Posta bos olamaz",
+  "email_inuse": "Bu E-Posta kullaniliyor",
   "email_invalid": "E-Posta gecerli degil",
   "password_null": "Sifre bos olamaz",
   "password_size": "Sifre en az 6 karakter olmali",
   "password_pattern": "Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir",
-  "email_inuse": "Bu E-Posta kullaniliyor"
+  "user_create_success": "Kullanici olusturuldu"
 }
