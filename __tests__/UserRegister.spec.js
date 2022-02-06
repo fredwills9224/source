@@ -15,8 +15,14 @@ const validUser = {
     email: 'user1@mail.com',
     password: 'User1password'
 };
-const postUser = (user = validUser)=>{
-    return request(app).post('/api/1.0/users').send(user);
+const postUser = (user = validUser, options = {})=>{
+
+    const agent = request(app).post('/api/1.0/users');
+    if(options.language){
+        agent.set('Accept-Language', options.language);
+    }
+    return agent.send(user);
+
 };
 describe('User Registration', ()=>{
 
@@ -161,12 +167,6 @@ describe('Internationalization', ()=>{
     // [postUser] w/ in[validUser]
         // dynamic test with pipe columns
             
-            const postUser = (user = validUser)=>{
-                return request(app).post('/api/1.0/users')
-                    .set('Accept-Language', 'tr')
-                    .send(user)
-                ;
-            };
             const username_null = 'Kullanici adi bos olamaz';
             const username_size = 'En az 4 en fazla 32 karakter olamali';
             const email_null = 'E-Posta bos olamaz';
@@ -201,7 +201,7 @@ describe('Internationalization', ()=>{
                     password: 'User1password'
                 };
                 user[field] = value;
-                const response = await postUser(user);
+                const response = await postUser(user, { language: 'tr' });
                 const body = response.body;
                 expect(body.validationErrors[field]).toBe(expectedMessage);
             
@@ -213,7 +213,7 @@ describe('Internationalization', ()=>{
                 async()=>{
 
                 await User.create({ ...validUser });
-                const response =  await postUser();
+                const response =  await postUser({...validUser}, { language: 'tr' });
                 expect(response.body.validationErrors.email).toBe(email_inuse);
             
             });
