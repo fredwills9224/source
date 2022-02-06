@@ -95,7 +95,7 @@ describe('User Registration', ()=>{
                     field          |  value              | expectedMessage
                     ${'username'}  |  ${null}            | ${'Username cannot be null'}
                     ${'username'}  |  ${'usr'}           | ${'Must have min 4 and max 32 characters'}
-                    ${'username'}  |  ${'a'.repeat(33)}  | ${'Must have min 4 and max 32 cahracters'}
+                    ${'username'}  |  ${'a'.repeat(33)}  | ${'Must have min 4 and max 32 characters'}
                     ${'email'}     |  ${null}            | ${'E-mail cannot be null'}
                     ${'password'}  |  ${null}            | ${'Password cannot be null'} 
                 `('returns  $expectedMessage when $field is $value', async ({ field, expectedMessage, value })=>{

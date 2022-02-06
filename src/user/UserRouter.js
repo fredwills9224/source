@@ -10,7 +10,7 @@ const { check, validationResult } = require('express-validator');
             .notEmpty()
             .withMessage('Username cannot be null')
             .bail()
-            .isLength({ min: 4 })
+            .isLength({ min: 4, max: 32 })
             .withMessage('Must have min 4 and max 32 characters')
         , 
         check('email').notEmpty().withMessage('E-mail cannot be null'), 
