@@ -122,6 +122,13 @@ describe('User Registration', ()=>{
 
             });
         // dynamic test with pipe columns
+        it('returns E-mail in use when same email is already in use', async()=>{
+
+            await User.create({ ...validUser });
+            const response =  await postUser();
+            expect(response.body.validationErrors.email).toBe('E-mail in use');
+
+        });
 
     // Invalid post [req]uests
 
