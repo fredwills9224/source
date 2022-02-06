@@ -175,6 +175,7 @@ describe('Internationalization', ()=>{
             const password_size = 'Sifre en az 6 karakter olmali';
             const password_pattern = 'Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir';
             const email_inuse = 'Bu E-Posta kullaniliyor';
+            const user_create_success = 'Kullanici olusturuldu';
             it.each`
                     field          |  value              | expectedMessage
                     ${'username'}  |  ${null}            | ${username_null}
@@ -219,5 +220,12 @@ describe('Internationalization', ()=>{
             });
         // [email_inuse]
     // [postUser] w/ in[validUser]
+    // [postUser] w/ [validUser]
+        it(`returns success message of ${user_create_success} when signup request is valid and language is set as turkish`, 
+            async ()=>{
+            const response = await postUser({...validUser}, { language: 'tr' });
+            expect(response.body.message).toBe(user_create_success);
+        });
+    // [postUser] w/ [validUser]
 
 });
