@@ -92,18 +92,18 @@ describe('User Registration', ()=>{
         });
         // dynamic test with pipe columns
             it.each`
-                    field | expectedMessage
-                    ${'username'} | ${'Username cannot be null'}
-                    ${'email'} | ${'E-mail cannot be null'}
-                    ${'password'} | ${'Password cannot be null'} 
-                `('returns  $expectedMessage when $field is null', async ({ field, expectedMessage })=>{
+                    field         | value   |  expectedMessage
+                    ${'username'} | ${null} |  ${'Username cannot be null'}
+                    ${'email'}    | ${null} |  ${'E-mail cannot be null'}
+                    ${'password'} | ${null} |  ${'Password cannot be null'} 
+                `('returns  $expectedMessage when $field is $value', async ({ field, expectedMessage, value })=>{
 
                 const user = {
                     username: 'user1',
                     email: 'user1@mail.com',
                     password: 'user1password'
                 };
-                user[field] = null;
+                user[field] = value;
                 const response = await postUser(user);
                 const body = response.body;
                 expect(body.validationErrors[field]).toBe(expectedMessage);
