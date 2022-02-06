@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('./User');
 const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
 
@@ -19,6 +20,15 @@ const { check, validationResult } = require('express-validator');
             .bail()
             .isEmail()
             .withMessage('E-mail is not valid')
+            .bail()
+            .custom( async (email)=> {
+
+                const user = await User.findOne({ where: { email: email} });
+                if(user){
+                    throw new Error('E-mail in use');
+                }
+
+            })
         ,
         check('password')
             .notEmpty()
