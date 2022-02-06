@@ -5,7 +5,10 @@ const { check, validationResult } = require('express-validator');
 
 // [User.create()]
 
-    router.post('/api/1.0/users', check('username').notEmpty(), check('email').notEmpty(), async (req, res)=>{
+    router.post('/api/1.0/users',
+        check('username').notEmpty().withMessage('Username cannot be null'), 
+        check('email').notEmpty().withMessage('E-mail cannot be null'), 
+        async (req, res)=>{
     
         const errors = validationResult(req);
         if(!errors.isEmpty()){
