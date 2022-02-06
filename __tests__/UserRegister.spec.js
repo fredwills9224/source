@@ -13,7 +13,7 @@ beforeEach(()=>{
 const validUser = {
     username: 'user1',
     email: 'user1@mail.com',
-    password: 'user1password'
+    password: 'User1password'
 };
 const postUser = (user = validUser)=>{
     return request(app).post('/api/1.0/users').send(user);
@@ -51,7 +51,7 @@ describe('User Registration', ()=>{
             await postUser();
             const userList = await User.findAll();
             const savedUser = userList[0];
-            expect(savedUser.password).not.toBe('user1password');
+            expect(savedUser.password).not.toBe('User1password');
 
         });
 
@@ -73,7 +73,7 @@ describe('User Registration', ()=>{
             const response = await postUser({
                 username: null,
                 email: 'user1@mail.com',
-                password: 'user1password'
+                password: 'User1password'
             });
             const body = response.body;
             expect(body.validationErrors).not.toBeUndefined();
@@ -84,7 +84,7 @@ describe('User Registration', ()=>{
             const response = await postUser({
                 username: null,
                 email: null,
-                password: 'user1password'
+                password: 'User1password'
             });
             const body = response.body;
             expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
@@ -108,7 +108,7 @@ describe('User Registration', ()=>{
                 const user = {
                     username: 'user1',
                     email: 'user1@mail.com',
-                    password: 'user1password'
+                    password: 'User1password'
                 };
                 user[field] = value;
                 const response = await postUser(user);
