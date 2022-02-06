@@ -110,6 +110,18 @@ describe('User Registration', ()=>{
 
             });
         // dynamic test with pipe columns
+        it('returns size validation error when username is less than 4 characters', async ()=>{
+            
+            const user ={
+                username: 'usr',
+                email: 'user1@mail.com',
+                password: 'user1password'
+            };
+            const response = await postUser(user);
+            const body = response.body;
+            expect(body.validationErrors.username).toBe('Must hane min 4 and max 32 characters');
+
+        });
 
     // Invalid post [req]uests
 
