@@ -119,7 +119,7 @@ describe('User Registration', ()=>{
             };
             const response = await postUser(user);
             const body = response.body;
-            expect(body.validationErrors.username).toBe('Must hane min 4 and max 32 characters');
+            expect(body.validationErrors.username).toBe('Must have min 4 and max 32 characters');
 
         });
 
