@@ -79,28 +79,6 @@ describe('User Registration', ()=>{
             expect(body.validationErrors).not.toBeUndefined();
 
         });
-        it('returns Username cannot be null when username is null', async()=>{
-
-            const response = await postUser({
-                username: null,
-                email: 'user1@mail.com',
-                password: 'user1password'
-            });
-            const body = response.body;
-            expect(body.validationErrors.username).toBe('Username cannot be null');
-
-        });
-        it('returns Email cannot be null when email is null', async()=>{
-
-            const response = await postUser({
-                username: 'user1',
-                email: null,
-                password: 'user1password'
-            });
-            const body = response.body;
-            expect(body.validationErrors.email).toBe('E-mail cannot be null');
-
-        });
         it('returns errors for both when username and email is null', async()=>{
 
             const response = await postUser({
@@ -112,17 +90,27 @@ describe('User Registration', ()=>{
             expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
 
         });
-        it('returns Password cannot be null message when password is null', async()=>{
-            
-            const response = await postUser({
-                username: 'user1',
-                email: 'user1@mail.com',
-                password: null
-            });
-            const body = response.body;
-            expect(body.validationErrors.password).toBe('Password cannot be null');
+        // dynamic test with 2 dimensional array
 
-        });
+            it.each([
+                    ['username', 'Username cannot be null'],
+                    ['email', 'E-mail cannot be null'],
+                    ['password', 'Password cannot be null']
+                ])('when %s is null %s is received', async (field, expectedMessage)=>{
+
+                const user = {
+                    username: 'user1',
+                    email: 'user1@mail.com',
+                    password: 'user1password'
+                };
+                user[field] = null;
+                const response = await postUser(user);
+                const body = response.body;
+                expect(body.validationErrors[field]).toBe(expectedMessage);
+
+            });
+
+        // dynamic test with 2 dimensional array
 
     // Invalid post [req]uests
 
