@@ -19,17 +19,12 @@ const UserService = require('./UserService');
 
     }
 // middlware
-
 // [User.create()]
 
     router.post('/api/1.0/users', validateUsername, async (req, res)=>{
         await UserService.save(req.body);
         return res.send({ message: 'User created' });
     });
-
-// middlware
-
-// middlware
 
 // [User.create()]
 

@@ -90,7 +90,18 @@ describe('User Registration', ()=>{
             expect(body.validationErrors.username).toBe('Username cannot be null');
 
         });
-        
+        it('returns Email cannot be null when email is null', async()=>{
+
+            const response = await postUser({
+                username: 'user1',
+                email: null,
+                password: 'user1password'
+            });
+            const body = response.body;
+            expect(body.validationErrors.email).toBe('Email cannot be null');
+
+        });
+
 
     // Invalid post [req]uests
 
