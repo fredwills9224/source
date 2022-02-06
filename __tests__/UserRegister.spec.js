@@ -98,7 +98,7 @@ describe('User Registration', ()=>{
                 password: 'user1password'
             });
             const body = response.body;
-            expect(body.validationErrors.email).toBe('Email cannot be null');
+            expect(body.validationErrors.email).toBe('E-mail cannot be null');
 
         });
 
