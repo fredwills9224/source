@@ -247,6 +247,7 @@ describe('Internationalization', ()=>{
             const password_pattern = 'Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir';
             const email_inuse = 'Bu E-Posta kullaniliyor';
             const user_create_success = 'Kullanici olusturuldu';
+            const email_failure = 'E-Posta gonderiminde hata olustu';
             it.each`
                     field          |  value              | expectedMessage
                     ${'username'}  |  ${null}            | ${username_null}
@@ -298,5 +299,19 @@ describe('Internationalization', ()=>{
             expect(response.body.message).toBe(user_create_success);
         });
     // [postUser] w/ [validUser]
+    // activation email
+        it(`returns ${email_failure} message when sending email fails and language is set as turkish`, 
+            async ()=>{
+
+            const mockSendAccountActivation = jest
+                .spyOn(EmailService, 'sendAccountActivation')
+                .mockRejectedValue({ message: 'Failed to deliver email' })
+            ;
+            const response = await postUser({...validUser}, {language: 'tr'});
+            mockSendAccountActivation.mockRestore();
+            expect(response.body.message).toBe(email_failure);                
+
+        });
+    // activation email
 
 });
