@@ -35,6 +35,7 @@ const generateToken = (length)=>{
     const activate = async (token)=>{
         const user = await User.findOne({ where: { activationToken: token } });
         user.inactive = false;
+        user.activationToken = null;
         await user.save();
     }; 
 // find [user] by token, set [inactive] prop to false + [save]
