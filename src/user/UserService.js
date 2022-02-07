@@ -1,6 +1,7 @@
 const User = require('./User');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const EmailException = require('../email/EmailException');
 const EmailService = require('../email/EmailService');
 const sequelize = require('../config/database');
 
@@ -20,7 +21,7 @@ const generateToken = (length)=>{
             await transaction.commit();            
         }catch (err){
             await transaction.rollback();
-            throw new Error(err);
+            throw new EmailException();
         }
     
     };
