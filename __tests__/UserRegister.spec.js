@@ -224,8 +224,8 @@ describe('User Registration', ()=>{
                 .mockRejectedValue({ message: 'Failed to deliver email' })
             ;
             const response = await postUser();
-            expect(response.body.message).toBe('E-mail failure');
             mockSendAccountActivation.mockRestore();
+            expect(response.body.message).toBe('E-mail failure');
 
         });
 
