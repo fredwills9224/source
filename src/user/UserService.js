@@ -20,6 +20,7 @@ const generateToken = (length)=>{
             await transaction.commit();            
         }catch (err){
             await transaction.rollback();
+            throw new Error(err);
         }
     
     };
