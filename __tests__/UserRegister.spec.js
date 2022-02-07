@@ -208,12 +208,13 @@ describe('User Registration', ()=>{
         });
         it('returns 502 Bad Gateway when sending email fails', async ()=>{
         
-            jest
+            const mockSendAccountActivation = jest
                 .spyOn(EmailService, 'sendAccountActivation')
                 .mockRejectedValue({ message: 'Failed to deliver email' })
             ;
             const response = await postUser();
             expect(response.status).toBe(502);
+            mockSendAccountActivation.mockRestore();
         
         });
 
