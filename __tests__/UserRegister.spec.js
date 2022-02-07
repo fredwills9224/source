@@ -179,6 +179,14 @@ describe('User Registration', ()=>{
             expect(savedUser.inactive).toBe(true);
 
         });
+        it('creates an activationToken for usr', async ()=>{
+
+            await postUser();
+            const users = await User.findAll();
+            const savedUser = users[0];
+            expect(savedUser.activationToken).toBeTruthy();
+
+        });
 
     // inactive mode
 
