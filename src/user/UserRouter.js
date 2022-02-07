@@ -58,5 +58,14 @@ const { check, validationResult } = require('express-validator');
     );
 
 // [User.create()]
+// [token]
+
+    router.post('/api/1.0/users/token/:token', async (req, res)=>{
+        const token = req.params.token;
+        await UserService.activate(token);
+        res.send();
+    });
+
+// [token]
 
 module.exports = router;

@@ -26,10 +26,17 @@ const generateToken = (length)=>{
     
     };
 // [save]s [user] with [hashedPassword]
-// finds [user] by email
+// find [user] by email
     const findByEmail = async (email)=>{
         return await User.findOne({ where: { email: email } });
     };
-// finds [user] by email
+// find [user] by email
+// find [user] by token, set [inactive] prop to false + [save]
+    const activate = async (token)=>{
+        const user = await User.findOne({ where: { activationToken: token } });
+        user.inactive = false;
+        await user.save();
+    }; 
+// find [user] by token, set [inactive] prop to false + [save]
 
-module.exports = { save, findByEmail };
+module.exports = { save, findByEmail, activate };
