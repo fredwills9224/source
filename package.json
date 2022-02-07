@@ -18,6 +18,7 @@
     "i18next": "^21.6.10",
     "i18next-fs-backend": "^1.1.4",
     "i18next-http-middleware": "^3.1.6",
+    "nodemailer": "^6.7.2",
     "sequelize": "^6.15.0",
     "sqlite3": "^5.0.0",
     "tar": "^6.1.9"
@@ -26,6 +27,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.8.0",
     "jest": "^27.4.7",
+    "nodemailer-stub": "^1.2.2",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"
   },
