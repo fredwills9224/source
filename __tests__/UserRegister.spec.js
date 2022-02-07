@@ -2,8 +2,8 @@ const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/user/User');
 const sequelize = require('../src/config/database');
-const nodemailerStub = require('nodemailer-stub');
 const EmailService = require('../src/email/EmailService');
+const SMTPServer = require('smtp-server').SMTPServer;
 
 beforeAll(()=>{
     return sequelize.sync();
@@ -196,13 +196,32 @@ describe('User Registration', ()=>{
         it('sends an Account activation email with activationToken',
             async ()=>{
             
+            let lastMail;
+            const server = new SMTPServer({
+                
+                authOptional: true,
+                onData(stream, session, callback){
+                    
+                    let mailBody;
+                    stream.on('data', (data)=>{
+                        mailBody += data.toString();
+                    });
+                    stream.on('end', ()=>{
+                        lastMail = mailBody;
+                        callback();
+                    });
+
+                }
+
+            });
+            await server.listen(8587, 'localhost');
             await postUser();
-            const lastMail = nodemailerStub.interactsWithMail.lastMail();
-            expect(lastMail.to[0]).toBe('user1@mail.com');
+            await server.close();
+            const users = await User.findAll();
+            const savedUser = users[0];
+            expect(lastMail).toContain('user1@mail.com');
             // 2nd assertion: fine in highly correlated test
-                const users = await User.findAll();
-                const savedUser = users[0];
-                expect(lastMail.content).toContain(savedUser.activationToken);
+                expect(lastMail).toContain(savedUser.activationToken);
             // 2nd assertion: fine in highly correlated test
             
         });
