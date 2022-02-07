@@ -228,6 +228,18 @@ describe('User Registration', ()=>{
             expect(response.body.message).toBe('E-mail failure');
 
         });
+        it('does not save user to database if activation email fails ', async ()=>{
+
+            const mockSendAccountActivation = jest
+                .spyOn(EmailService, 'sendAccountActivation')
+                .mockRejectedValue({ message: 'Failed to deliver email' })
+            ;
+            await postUser();
+            mockSendAccountActivation.mockRestore();
+            const users = await User.findAll();
+            expect(users.length).toBe(0);
+
+        });
 
     // activation email
 
