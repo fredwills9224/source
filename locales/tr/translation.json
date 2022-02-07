@@ -7,5 +7,6 @@
   "password_null": "Sifre bos olamaz",
   "password_size": "Sifre en az 6 karakter olmali",
   "password_pattern": "Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir",
-  "user_create_success": "Kullanici olusturuldu"
+  "user_create_success": "Kullanici olusturuldu",
+  "email_failure": "E-Posta gonderiminde hata olustu"
 }
