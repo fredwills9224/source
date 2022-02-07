@@ -217,6 +217,17 @@ describe('User Registration', ()=>{
             mockSendAccountActivation.mockRestore();
         
         });
+        it('returns Email failure message when sending email fails', async()=>{
+
+            const mockSendAccountActivation = jest
+                .spyOn(EmailService, 'sendAccountActivation')
+                .mockRejectedValue({ message: 'Failed to deliver email' })
+            ;
+            const response = await postUser();
+            expect(response.body.message).toBe('E-mail failure');
+            mockSendAccountActivation.mockRestore();
+
+        });
 
     // activation email
 
