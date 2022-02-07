@@ -60,16 +60,6 @@ describe('User Registration', ()=>{
             expect(savedUser.password).not.toBe('User1password');
 
         });
-        // inactive mode
-            it('creates user in inactive mode', async ()=>{
-
-                await postUser();
-                const users = await User.findAll();
-                const savedUser = users[0];
-                expect(savedUser.inactive).toBe(true);
-
-            });
-        // inactive mode
 
     // [postUser()] w/ [validUser]
     // [postUser] w/ in[validUser]
@@ -169,6 +159,28 @@ describe('User Registration', ()=>{
         // [email_inuse]
 
     // [postUser] w/ in[validUser]
+    // inactive mode
+        
+        it('creates user in inactive mode', async ()=>{
+            
+            await postUser();
+            const users = await User.findAll();
+            const savedUser = users[0];
+            expect(savedUser.inactive).toBe(true);
+        
+        });
+        it('creates user in inactive mode even when the request body contains inactive set as false',
+            async ()=>{
+
+            const newUser = { ...validUser, inactive: false };
+            await postUser(newUser);
+            const users = await User.findAll();
+            const savedUser = users[0];
+            expect(savedUser.inactive).toBe(true);
+
+        });
+
+    // inactive mode
 
 });
 
