@@ -3,9 +3,12 @@ const bcrypt = require('bcrypt');
 
 // [save]s [user] with [hashedPassword]
     const save = async(body)=>{
-        const hashedPassword = await bcrypt.hash(body.password, 10);
-        const user = { ...body, password: hashedPassword };
+
+        const { username, email, password } = body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = { username, email, password: hashedPassword };
         await User.create(user);
+    
     };
 // [save]s [user] with [hashedPassword]
 // finds [user] by email
