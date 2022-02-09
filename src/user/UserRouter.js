@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
-const InvalidTokenException = require('./InvalidTokenException');
 
 // [User.create()]
 
@@ -40,7 +39,7 @@ const InvalidTokenException = require('./InvalidTokenException');
             .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
             .withMessage('password_pattern')
         , 
-        async (req, res)=>{
+        async (req, res, next)=>{
     
             const errors = validationResult(req);
             if(!errors.isEmpty()){
@@ -52,7 +51,7 @@ const InvalidTokenException = require('./InvalidTokenException');
                 await UserService.save(req.body);
                 return res.send({ message: req.t('user_create_success') });
             }catch(err){
-                return res.status(502).send({ message: req.t(err.message) });
+                next(err);
             }
             
         }
@@ -61,18 +60,15 @@ const InvalidTokenException = require('./InvalidTokenException');
 // [User.create()]
 // [token]
 
-    router.post('/api/1.0/users/token/:token', (req, res, next)=>{
+    router.post('/api/1.0/users/token/:token', async (req, res, next)=>{
 
-        // express doesn't support passing custum exception without it being sent as a [next()]
-            next(new InvalidTokenException());
-        // express doesn't support passing custum exception without it being sent as a [next()]
-        // const token = req.params.token;
-        // try{
-        //     await UserService.activate(token);
-        // }catch(err){
-        //     return res.status(400).send({ message: req.t(err.message) });
-        // }
-        // res.send({ message: req.t('account_activation_success') });
+        const token = req.params.token;
+        try{
+            await UserService.activate(token);
+            return res.send({ message: req.t('account_activation_success') });
+        }catch(err){
+            next(err);
+        }
 
     });
 

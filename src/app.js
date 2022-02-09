@@ -37,7 +37,8 @@ i18next
 // [router]
 // [err]or handler
     app.use((err, req, res, next)=>{
-        console.log(err);
+        const { status, message } = err;
+        res.status(status).send({ message: req.t(message) });
     });
 // [err]or handler
 console.log('env: ' + process.env.NODE_ENV);
