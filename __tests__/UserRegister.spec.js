@@ -404,6 +404,7 @@ describe('Account activation', ()=>{
             const token = 'this-token-does-not-exist';
             const response = await request(app)
                 .post('/api/1.0/users/token/' + token)
+                .set('Accept-Language', language)
                 .send()
             ;
             expect(response.body.message).toBe(message);
