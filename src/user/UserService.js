@@ -16,7 +16,7 @@ const generateToken = (length)=>{
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = { username, email, password: hashedPassword, activationToken: generateToken(16) };
         const transaction = await sequelize.transaction();
-        await User.create(user);
+        await User.create(user, {transaction });
         try{
             await EmailService.sendAccountActivation(email, user.activationToken);
             await transaction.commit();            

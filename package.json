@@ -20,8 +20,8 @@
     "i18next-http-middleware": "^3.1.6",
     "nodemailer": "^6.7.2",
     "sequelize": "^6.15.0",
-    "sqlite3": "^5.0.0",
-    "tar": "^6.1.9"
+    "sqlite3": "^5.0.2",
+    "tar": "^4.4.19"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
