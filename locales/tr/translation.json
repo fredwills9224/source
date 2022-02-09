@@ -8,5 +8,6 @@
   "password_size": "Sifre en az 6 karakter olmali",
   "password_pattern": "Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir",
   "user_create_success": "Kullanici olusturuldu",
-  "email_failure": "E-Posta gonderiminde hata olustu"
+  "email_failure": "E-Posta gonderiminde hata olustu",
+  "account_activation_failure": "Bu hesap daha once aktiflestirilmis olabilir ya da token hatali"
 }

@@ -396,8 +396,8 @@ describe('Account activation', ()=>{
         it.each`
             language | message
             ${'tr'}  | ${'Bu hesap daha once aktiflestirilmis olabilir ya da token hatali'}
-            ${'en'}  | ${'This account is either active or the token is invaliid'}
-            `('returns $message when wrong token is sent and language', 
+            ${'en'}  | ${'This account is either active or the token is invalid'}
+            `('returns $message when wrong token is sent and language is $language', 
             async({language, message})=>{
 
             await postUser();
