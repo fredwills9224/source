@@ -65,7 +65,9 @@ const { check, validationResult } = require('express-validator');
         try{
             await UserService.activate(token);
 
-        }catch(err){}
+        }catch(err){
+            return res.status(400).send();
+        }
         res.send();
     });
 
