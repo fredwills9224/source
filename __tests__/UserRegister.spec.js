@@ -455,14 +455,15 @@ describe('Account activation', ()=>{
 
 });
 
+describe('Error Model', ()=>{
 
+    it('returns path, timestamp, message and validationErrors in response when validation failure',
+        async ()=>{
 
+        const response = await postUser({ ...validUser, username: null });
+        const body = response.body;
+        expect(Object.keys(body)).toEqual(['path', 'timestamp', 'message', 'validationErrors']);
 
+    });
 
-
-
-
-
-
-
-
+});
