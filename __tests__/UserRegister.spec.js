@@ -393,7 +393,35 @@ describe('Account activation', ()=>{
             expect(response.status).toBe(400);
 
         });
+        it.each`
+            language | message
+            ${'tr'}  | ${'Bu hesap daha once aktiflestirilmis olabilir ya da token hatali'}
+            ${'en'}  | ${'This account is either active or the token is invaliid'}
+            `('returns $message when wrong token is sent and language', 
+            async({language, message})=>{
+
+            await postUser();
+            const token = 'this-token-does-not-exist';
+            const response = await request(app)
+                .post('/api/1.0/users/token/' + token)
+                .send()
+            ;
+            expect(response.body.message).toBe(message);
+
+        });
 
     // in[validUser]
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
