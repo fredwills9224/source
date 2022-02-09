@@ -37,8 +37,15 @@ i18next
 // [router]
 // [err]or handler
     app.use((err, req, res, next)=>{
-        const { status, message } = err;
-        res.status(status).send({ message: req.t(message) });
+        
+        const { status, message, errors } = err;
+        let validationErrors;
+        if(errors){
+            validationErrors = {};
+            errors.forEach( (error)=> (validationErrors[error.param] = req.t(error.msg)) );
+        }
+        res.status(status).send({ message: req.t(message), validationErrors });
+    
     });
 // [err]or handler
 console.log('env: ' + process.env.NODE_ENV);

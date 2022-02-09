@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
+const ValidationException = require('../error/ValidationException');
 
 // [User.create()]
 
@@ -43,9 +44,7 @@ const { check, validationResult } = require('express-validator');
     
             const errors = validationResult(req);
             if(!errors.isEmpty()){
-                const validationErrors = {};
-                errors.array().forEach( (error)=> (validationErrors[error.param] = req.t(error.msg)));
-                return res.status(400).send({ validationErrors: validationErrors });
+                return next(new ValidationException(errors.array()));
             }
             try{
                 await UserService.save(req.body);
