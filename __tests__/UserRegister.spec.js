@@ -259,7 +259,18 @@ describe('User Registration', ()=>{
 
         });
 
-    // activation email
+    // activation 
+    it('returns Validation Faliure message in error response body when validation fails',
+        async ()=>{
+
+        const response = await postUser({
+            username: null,
+            email: validUser.email,
+            password: 'User1password'
+        });
+        expect(response.body.message).toBe('Validation Failure');
+
+    });
 
 });
 
@@ -278,6 +289,7 @@ describe('Internationalization', ()=>{
             const email_inuse = 'Bu E-Posta kullaniliyor';
             const user_create_success = 'Kullanici olusturuldu';
             const email_failure = 'E-Posta gonderiminde hata olustu';
+            const validation_failure = 'Girilen degerler uygun degil';
             it.each`
                     field          |  value              | expectedMessage
                     ${'username'}  |  ${null}            | ${username_null}
@@ -330,14 +342,36 @@ describe('Internationalization', ()=>{
         });
     // [postUser] w/ [validUser]
     // activation email
+            
         it(`returns ${email_failure} message when sending email fails and language is set as turkish`, 
             async ()=>{
-
+                
             simulateSmtpFailure = true;
             const response = await postUser({...validUser}, {language: 'tr'});
-            expect(response.body.message).toBe(email_failure);                
-
+            expect(response.body.message).toBe(email_failure);
+            
         });
+        // in[validUser]
+
+            it(`returns ${validation_failure} message in error response body when validation fails`,
+                async ()=>{
+
+                const response = await postUser(
+                    
+                    {
+                        username: null,
+                        email: validUser.email,
+                        password: 'User1password'    
+                    },
+                    {language: 'tr'}
+
+                );
+                expect(response.body.message).toBe(validation_failure);
+
+            });
+
+        // in[validUser]
+        
     // activation email
 
 });
