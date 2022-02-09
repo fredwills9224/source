@@ -61,9 +61,11 @@ const InvalidTokenException = require('./InvalidTokenException');
 // [User.create()]
 // [token]
 
-    router.post('/api/1.0/users/token/:token', (req, res)=>{
+    router.post('/api/1.0/users/token/:token', (req, res, next)=>{
 
-        throw new InvalidTokenException();
+        // express doesn't support passing custum exception without it being sent as a [next()]
+            next(new InvalidTokenException());
+        // express doesn't support passing custum exception without it being sent as a [next()]
         // const token = req.params.token;
         // try{
         //     await UserService.activate(token);
