@@ -394,14 +394,20 @@ describe('Account activation', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${'Bu hesap daha once aktiflestirilmis olabilir ya da token hatali'}
-            ${'en'}  | ${'This account is either active or the token is invalid'}
-            `('returns $message when wrong token is sent and language is $language', 
-            async({language, message})=>{
+            language | tokenStatus  | message
+            ${'tr'}  | ${'wrong'}   | ${'Bu hesap daha once aktiflestirilmis olabilir ya da token hatali'}
+            ${'en'}  | ${'wrong'}   | ${'This account is either active or the token is invalid'}
+            ${'tr'}  | ${'correct'} | ${'Hesabiniz aktiflestirildi'}
+            ${'en'}  | ${'correct'} | ${'Account is activated'}
+            `('returns $message when wrong token is $tokenStatus and language is $language', 
+            async({language, tokenStatus, message})=>{
 
             await postUser();
-            const token = 'this-token-does-not-exist';
+            let token = 'this-token-does-not-exist';
+            if(tokenStatus === 'correct'){
+                let users = await User.findAll();
+                token = users[0].activationToken;
+            }
             const response = await request(app)
                 .post('/api/1.0/users/token/' + token)
                 .set('Accept-Language', language)
