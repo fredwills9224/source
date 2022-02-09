@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
+const InvalidTokenException = require('./InvalidTokenException');
 
 // [User.create()]
 
@@ -60,15 +61,16 @@ const { check, validationResult } = require('express-validator');
 // [User.create()]
 // [token]
 
-    router.post('/api/1.0/users/token/:token', async (req, res)=>{
+    router.post('/api/1.0/users/token/:token', (req, res)=>{
 
-        const token = req.params.token;
-        try{
-            await UserService.activate(token);
-        }catch(err){
-            return res.status(400).send({ message: req.t(err.message) });
-        }
-        res.send({ message: req.t('account_activation_success') });
+        throw new InvalidTokenException();
+        // const token = req.params.token;
+        // try{
+        //     await UserService.activate(token);
+        // }catch(err){
+        //     return res.status(400).send({ message: req.t(err.message) });
+        // }
+        // res.send({ message: req.t('account_activation_success') });
 
     });
 

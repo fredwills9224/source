@@ -35,6 +35,11 @@ i18next
 // [router]
     app.use(UserRouter);
 // [router]
+// [err]or handler
+    app.use((err, req, res, next)=>{
+        console.log(err);
+    });
+// [err]or handler
 console.log('env: ' + process.env.NODE_ENV);
 
 module.exports = app;
