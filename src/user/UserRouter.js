@@ -68,7 +68,7 @@ const { check, validationResult } = require('express-validator');
         }catch(err){
             return res.status(400).send({ message: req.t(err.message) });
         }
-        res.send();
+        res.send({ message: req.t('account_activation_success') });
 
     });
 
