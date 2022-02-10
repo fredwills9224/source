@@ -465,5 +465,17 @@ describe('Error Model', ()=>{
         expect(Object.keys(body)).toEqual(['path', 'timestamp', 'message', 'validationErrors']);
 
     });
+    it('returns path, timestamp and message in response when request fails other than validation error', 
+        async ()=>{
+        
+        const token = 'this-token-does-not-exist';
+        const response = await request(app)
+            .post('/api/1.0/users/token/' + token)
+            .send()
+        ;
+        const body = response.body;
+        expect(Object.keys(body)).toEqual(['path', 'timestamp', 'message']);
+
+    });
 
 });
