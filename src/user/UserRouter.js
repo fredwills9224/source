@@ -73,7 +73,7 @@ const pagination = require('../middleware/pagination');
     });
 
 // [token].post
-// [User].get
+// [User].findAll
     router.get('/api/1.0/users', pagination, async (req, res)=>{        
         
         const { page, size } = req.pagination;
@@ -81,5 +81,10 @@ const pagination = require('../middleware/pagination');
         res.send(users);
 
     });
-// [User].get
+// [User].findAll
+// [User].findById
+    router.get('/api/1.0/users/:id', (req, res)=>{
+        res.status(404).send({ message: req.t('user_not_found') });
+    });
+// [User].findById
 module.exports = router;

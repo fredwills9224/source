@@ -11,5 +11,6 @@
   "email_failure": "E-Posta gonderiminde hata olustu",
   "account_activation_failure": "Bu hesap daha once aktiflestirilmis olabilir ya da token hatali",
   "account_activation_success": "Hesabiniz aktiflestirildi",
-  "validation_failure": "Girilen degerler uygun degil"
+  "validation_failure": "Girilen degerler uygun degil",
+  "user_not_found": "Kullanici bulunamadi"
 }
