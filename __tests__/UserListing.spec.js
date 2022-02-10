@@ -53,8 +53,17 @@ describe('Listing Users', ()=>{
 
         await addUsers(6, 5);
         const response = await getUsers();
+        console.log(response.body.content[0]);
         expect(response.body.content.length).toBe(6);
 
+    });
+    it('returns only id, username and email in content array for each user', async ()=>{
+
+        await addUsers(11);
+        const response = await getUsers();
+        const user = response.body.content[0];
+        expect(Object.keys(user)).toEqual(['id', 'username', 'email']);
+        
     });
 
 });
