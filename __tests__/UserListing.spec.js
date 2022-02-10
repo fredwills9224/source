@@ -115,5 +115,14 @@ describe('Listing Users', ()=>{
         expect(response.body.size).toBe(10);
 
     });
+    it('returns page as zero and size as 10 when non numeric query params provided for both', 
+        async ()=>{
+
+        await addUsers(11);
+        const response = await getUsers().query({ size: 'size', page: 'page' });
+        expect(response.body.size).toBe(10);
+        expect(response.body.page).toBe(0);
+
+    });
 
 });
