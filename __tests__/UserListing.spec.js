@@ -78,7 +78,7 @@ describe('Listing Users', ()=>{
         async ()=>{
        
         await addUsers(11);
-        const response = await request(app).get('/api/1.0/users').query({page: 1});
+        const response = await getUsers().query({page: 1});
         expect(response.body.content[0].username).toBe('user11');
         expect(response.body.page).toBe(1);
 
