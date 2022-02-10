@@ -50,7 +50,8 @@ const generateToken = (length)=>{
     const getUsers = async ()=>{
         
         const users = await User.findAll({
-           limit: 10 
+            where: { inactive: false },
+            limit: 10
         });
         return {
             content: users,
