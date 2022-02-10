@@ -48,12 +48,17 @@ const generateToken = (length)=>{
 // [getUsers]
 
     const getUsers = async ()=>{
+        
+        const users = await User.findAll({
+           limit: 10 
+        });
         return {
-            content: [],
+            content: users,
             page: 0,
             size:10,
             totalPages: 0
         };
+    
     };
 
 // [getUsers]
