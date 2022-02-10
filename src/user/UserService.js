@@ -47,7 +47,7 @@ const generateToken = (length)=>{
 // find [user] by token, set [inactive] prop to false + [save]
 // [getUsers]
 
-    const getUsers = async (page, size =10)=>{
+    const getUsers = async (page, size)=>{
         
         const usersWithCount = await User.findAndCountAll({
             where: { inactive: false },
@@ -58,7 +58,7 @@ const generateToken = (length)=>{
         return {
             content: usersWithCount.rows,
             page,
-            size: Number.parseInt(size),
+            size,
             totalPages: Math.ceil( usersWithCount.count/size )
         };
     
