@@ -79,7 +79,7 @@ const ValidationException = require('../error/ValidationException');
         if(page < 0){
             page=0;
         }
-        const users = await UserService.getUsers(page);
+        const users = await UserService.getUsers(page, req.query.size);
         res.send(users);
 
     });
