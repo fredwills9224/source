@@ -80,7 +80,7 @@ const ValidationException = require('../error/ValidationException');
             page=0;
         }
         let size = req.query.size ? Number.parseInt(req.query.size) : 10;
-        if(size > 10){
+        if(size > 10 || size < 1){
             size = 10;
         }
         const users = await UserService.getUsers(page, size);
