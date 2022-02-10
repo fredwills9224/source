@@ -73,6 +73,8 @@ const ValidationException = require('../error/ValidationException');
 
 // [token].post
 // [User].get
-
+    router.get('/api/1.0/users', (req, res)=>{        
+        res.send();
+    });
 // [User].get
 module.exports = router;
