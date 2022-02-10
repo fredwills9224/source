@@ -72,19 +72,28 @@ const ValidationException = require('../error/ValidationException');
     });
 
 // [token].post
-// [User].get
-    router.get('/api/1.0/users', async (req, res)=>{        
-        
+// [pagination]
+    const pagination = (req, res, next)=>{
+
         const pageAsNumber = Number.parseInt(req.query.page);
         const sizeAsNumber = Number.parseInt(req.query.size);
         let page = Number.isNaN(pageAsNumber) ? 0 : pageAsNumber;
         if(page < 0){
-            page=0;
+            page = 0;
         }
         let size = Number.isNaN(sizeAsNumber) ? 10 : sizeAsNumber;
         if(size > 10 || size < 1){
             size = 10;
         }
+        req.pagination = { size, page };
+        next();
+
+    };
+// [pagination]
+// [User].get
+    router.get('/api/1.0/users', pagination, async (req, res)=>{        
+        
+        const { page, size } = req.pagination;
         const users = await UserService.getUsers(page, size);
         res.send(users);
 
