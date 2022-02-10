@@ -51,6 +51,7 @@ const generateToken = (length)=>{
         
         const users = await User.findAll({
             where: { inactive: false },
+            attributes: ['id', 'username', 'email'],
             limit: 10
         });
         return {
