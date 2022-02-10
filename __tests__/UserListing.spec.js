@@ -74,7 +74,7 @@ describe('Listing Users', ()=>{
         // limit 10 users per page
 
     });
-    fit('returns second page users and page indicator when page is set as 1 in request parameter', 
+    it('returns second page users and page indicator when page is set as 1 in request parameter', 
         async ()=>{
        
         await addUsers(11);
