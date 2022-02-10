@@ -3,6 +3,7 @@ const router = express.Router();
 const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
+const pagination = require('../middleware/pagination');
 
 // [User].post
 
@@ -72,24 +73,6 @@ const ValidationException = require('../error/ValidationException');
     });
 
 // [token].post
-// [pagination]
-    const pagination = (req, res, next)=>{
-
-        const pageAsNumber = Number.parseInt(req.query.page);
-        const sizeAsNumber = Number.parseInt(req.query.size);
-        let page = Number.isNaN(pageAsNumber) ? 0 : pageAsNumber;
-        if(page < 0){
-            page = 0;
-        }
-        let size = Number.isNaN(sizeAsNumber) ? 10 : sizeAsNumber;
-        if(size > 10 || size < 1){
-            size = 10;
-        }
-        req.pagination = { size, page };
-        next();
-
-    };
-// [pagination]
 // [User].get
     router.get('/api/1.0/users', pagination, async (req, res)=>{        
         
