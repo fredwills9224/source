@@ -477,5 +477,16 @@ describe('Error Model', ()=>{
         expect(Object.keys(body)).toEqual(['path', 'timestamp', 'message']);
 
     });
+    it('returns path in error body', async ()=>{
+
+        const token = 'this-token-does-not-exist';
+        const response = await request(app)
+            .post('/api/1.0/users/token/' + token)
+            .send()
+        ;
+        const body = response.body;
+        expect(body.path).toEqual('/api/1.0/users/token/' + token);
+
+    });
 
 });
