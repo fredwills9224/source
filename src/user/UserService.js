@@ -45,5 +45,17 @@ const generateToken = (length)=>{
 
     }; 
 // find [user] by token, set [inactive] prop to false + [save]
+// [getUsers]
 
-module.exports = { save, findByEmail, activate };
+    const getUsers = async ()=>{
+        return {
+            content: [],
+            page: 0,
+            size:10,
+            totalPages: 0
+        };
+    };
+
+// [getUsers]
+
+module.exports = { save, findByEmail, activate, getUsers };
