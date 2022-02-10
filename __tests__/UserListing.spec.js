@@ -13,12 +13,13 @@ beforeEach(()=>{
 const getUsers = ()=>{
     return request(app).get('/api/1.0/users');
 };
-const addUsers = async (count)=>{
+const addUsers = async (activeUserCount, inactiveUserCount=0)=>{
 
-    for(let i=0; i<count; i++){
+    for(let i=0; i<activeUserCount+inactiveUserCount; i++){
         await User.create({
             username: `users${i +1}`,
-            email: `users${i +1}@mail.com`
+            email: `users${i +1}@mail.com`,
+            inactive: i>= activeUserCount
         });
     }
 
@@ -45,6 +46,14 @@ describe('Listing Users', ()=>{
         await addUsers(11);
         const response = await getUsers();
         expect(response.body.content.length).toBe(10);
+
+    });
+    it('returns 6 users in page content when there are active 6 users and inactive 5 users in database',
+        async ()=>{
+
+        await addUsers(6, 5);
+        const response = await getUsers();
+        expect(response.body.content.length).toBe(6);
 
     });
 
