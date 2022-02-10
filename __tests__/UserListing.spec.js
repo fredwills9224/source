@@ -126,3 +126,30 @@ describe('Listing Users', ()=>{
     });
 
 });
+
+describe('Get User', ()=>{
+
+    // test automatically passes because express sends 404 response as a default
+        it('returns 404 when user not found', async ()=>{
+
+            const response = await request(app).get('/api/1.0/users/5');
+            expect(response.status).toBe(404);
+
+        });
+    // test automatically passes because express sends 404 response as a default
+    it.each`
+        language | message
+        ${'tr'}  | ${'Kullanici bulunamadi'}
+        ${'en'}  | ${'User not found'}
+        `('returns $message for unknown user when language is set to $language', 
+        async ({language, message})=> {
+
+        const response = await request(app)
+            .get('/api/1.0/users/5')
+            .set('Accept-Language', language)
+        ;
+        expect(response.body.message).toBe(message);
+
+    });
+
+});
