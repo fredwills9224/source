@@ -74,8 +74,14 @@ const ValidationException = require('../error/ValidationException');
 // [token].post
 // [User].get
     router.get('/api/1.0/users', async (req, res)=>{        
-        const users = await UserService.getUsers(req.query.page);
+        
+        let page = req.query.page ? Number.parseInt(req.query.page) : 0;
+        if(page < 0){
+            page=0;
+        }
+        const users = await UserService.getUsers(page);
         res.send(users);
+
     });
 // [User].get
 module.exports = router;
