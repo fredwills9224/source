@@ -4,7 +4,7 @@ const UserService = require('./UserService');
 const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 
-// [User.create()]
+// [User].post
 
     router.post('/api/1.0/users',
         check('username')
@@ -56,8 +56,8 @@ const ValidationException = require('../error/ValidationException');
         }
     );
 
-// [User.create()]
-// [token]
+// [User].post
+// [token].post
 
     router.post('/api/1.0/users/token/:token', async (req, res, next)=>{
 
@@ -71,6 +71,8 @@ const ValidationException = require('../error/ValidationException');
 
     });
 
-// [token]
+// [token].post
+// [User].get
 
+// [User].get
 module.exports = router;
