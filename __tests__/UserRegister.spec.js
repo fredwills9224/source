@@ -3,6 +3,8 @@ const app = require('../src/app');
 const User = require('../src/user/User');
 const sequelize = require('../src/config/database');
 const SMTPServer = require('smtp-server').SMTPServer;
+const en = require('../locales/en/translation.json');
+const tr = require('../locales/tr/translation.json');
 
 let lastMail, server;
 let simulateSmtpFailure = false;
@@ -36,9 +38,9 @@ beforeAll(async ()=>{
     await sequelize.sync();
 
 });
-beforeEach(()=>{
+beforeEach(async ()=>{
     simulateSmtpFailure = false;
-    return User.destroy({ truncate: true });            
+    await User.destroy({ truncate: true });            
 });
 afterAll(async ()=>{
     await server.close();
@@ -68,7 +70,7 @@ describe('User Registration', ()=>{
         }); 
         it('returns success message when signup request is valid', async ()=>{
             const response = await postUser();
-            expect(response.body.message).toBe('User created');
+            expect(response.body.message).toBe(en.user_create_success);
         });
         it('saves the user to database', async ()=> {
 
@@ -132,31 +134,23 @@ describe('User Registration', ()=>{
         });
         // dynamic test with pipe columns
             
-            const username_null = 'Username cannot be null';
-            const username_size = 'Must have min 4 and max 32 characters';
-            const email_null = 'E-mail cannot be null';
-            const email_invalid = 'E-mail is not valid';
-            const email_inuse = 'E-mail in use';
-            const password_null = 'Password cannot be null';
-            const password_size = 'Password must be at least 6 characters';
-            const password_pattern = 'Password must have at least 1 uppercase, 1 lowercase letter and 1 number';
             it.each`
                     field          |  value              | expectedMessage
-                    ${'username'}  |  ${null}            | ${username_null}
-                    ${'username'}  |  ${'usr'}           | ${username_size}
-                    ${'username'}  |  ${'a'.repeat(33)}  | ${username_size}
-                    ${'email'}     |  ${null}            | ${email_null}
-                    ${'email'}     |  ${'mail.com'}      | ${email_invalid}
-                    ${'email'}     |  ${'user.mail.com'} | ${email_invalid}
-                    ${'email'}     |  ${'user@mail'}     | ${email_invalid}
-                    ${'password'}  |  ${null}            | ${password_null} 
-                    ${'password'}  |  ${'P4ssw'}         | ${password_size} 
-                    ${'password'}  |  ${'alllowercase'}  | ${password_pattern} 
-                    ${'password'}  |  ${'ALLUPPERCASE'}  | ${password_pattern} 
-                    ${'password'}  |  ${'12344567890'}   | ${password_pattern} 
-                    ${'password'}  |  ${'lowerandUPPER'} | ${password_pattern} 
-                    ${'password'}  |  ${'lowerand5667'}  | ${password_pattern} 
-                    ${'password'}  |  ${'UPPER44494'}    | ${password_pattern} 
+                    ${'username'}  |  ${null}            | ${en.username_null}
+                    ${'username'}  |  ${'usr'}           | ${en.username_size}
+                    ${'username'}  |  ${'a'.repeat(33)}  | ${en.username_size}
+                    ${'email'}     |  ${null}            | ${en.email_null}
+                    ${'email'}     |  ${'mail.com'}      | ${en.email_invalid}
+                    ${'email'}     |  ${'user.mail.com'} | ${en.email_invalid}
+                    ${'email'}     |  ${'user@mail'}     | ${en.email_invalid}
+                    ${'password'}  |  ${null}            | ${en.password_null} 
+                    ${'password'}  |  ${'P4ssw'}         | ${en.password_size} 
+                    ${'password'}  |  ${'alllowercase'}  | ${en.password_pattern} 
+                    ${'password'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern} 
+                    ${'password'}  |  ${'12344567890'}   | ${en.password_pattern} 
+                    ${'password'}  |  ${'lowerandUPPER'} | ${en.password_pattern} 
+                    ${'password'}  |  ${'lowerand5667'}  | ${en.password_pattern} 
+                    ${'password'}  |  ${'UPPER44494'}    | ${en.password_pattern} 
                 `('returns  $expectedMessage when $field is $value', async ({ field, expectedMessage, value })=>{
 
                 const user = {
@@ -173,10 +167,10 @@ describe('User Registration', ()=>{
 
         // dynamic test with pipe columns
         // [email_inuse]
-            it(`returns ${email_inuse} use when same email is already in use`, async()=>{
+            it(`returns ${en.email_inuse} use when same email is already in use`, async()=>{
                 await User.create({ ...validUser });
                 const response =  await postUser();
-                expect(response.body.validationErrors.email).toBe(email_inuse);
+                expect(response.body.validationErrors.email).toBe(en.email_inuse);
             });
             it('returns errors for both username is null and email is in use', async ()=>{
 
@@ -247,7 +241,7 @@ describe('User Registration', ()=>{
 
             simulateSmtpFailure = true;            
             const response = await postUser();
-            expect(response.body.message).toBe('E-mail failure');
+            expect(response.body.message).toBe(en.email_failure);
 
         });
         it('does not save user to database if activation email fails ', async ()=>{
@@ -268,7 +262,7 @@ describe('User Registration', ()=>{
             email: validUser.email,
             password: 'User1password'
         });
-        expect(response.body.message).toBe('Validation Failure');
+        expect(response.body.message).toBe(en.validation_failure);
 
     });
 
@@ -279,34 +273,23 @@ describe('Internationalization', ()=>{
     // [postUser] w/ in[validUser]
         // dynamic test with pipe columns
             
-            const username_null = 'Kullanici adi bos olamaz';
-            const username_size = 'En az 4 en fazla 32 karakter olamali';
-            const email_null = 'E-Posta bos olamaz';
-            const email_invalid = 'E-Posta gecerli degil';
-            const password_null = 'Sifre bos olamaz';
-            const password_size = 'Sifre en az 6 karakter olmali';
-            const password_pattern = 'Sifrede en az 1 buyuk, 1 kucuk harf ve 1 sayi bulunmalidir';
-            const email_inuse = 'Bu E-Posta kullaniliyor';
-            const user_create_success = 'Kullanici olusturuldu';
-            const email_failure = 'E-Posta gonderiminde hata olustu';
-            const validation_failure = 'Girilen degerler uygun degil';
             it.each`
                     field          |  value              | expectedMessage
-                    ${'username'}  |  ${null}            | ${username_null}
-                    ${'username'}  |  ${'usr'}           | ${username_size}
-                    ${'username'}  |  ${'a'.repeat(33)}  | ${username_size}
-                    ${'email'}     |  ${null}            | ${email_null}
-                    ${'email'}     |  ${'mail.com'}      | ${email_invalid}
-                    ${'email'}     |  ${'user.mail.com'} | ${email_invalid}
-                    ${'email'}     |  ${'user@mail'}     | ${email_invalid}
-                    ${'password'}  |  ${null}            | ${password_null} 
-                    ${'password'}  |  ${'P4ssw'}         | ${password_size} 
-                    ${'password'}  |  ${'alllowercase'}  | ${password_pattern} 
-                    ${'password'}  |  ${'ALLUPPERCASE'}  | ${password_pattern} 
-                    ${'password'}  |  ${'12344567890'}   | ${password_pattern} 
-                    ${'password'}  |  ${'lowerandUPPER'} | ${password_pattern} 
-                    ${'password'}  |  ${'lowerand5667'}  | ${password_pattern} 
-                    ${'password'}  |  ${'UPPER44494'}    | ${password_pattern} 
+                    ${'username'}  |  ${null}            | ${tr.username_null}
+                    ${'username'}  |  ${'usr'}           | ${tr.username_size}
+                    ${'username'}  |  ${'a'.repeat(33)}  | ${tr.username_size}
+                    ${'email'}     |  ${null}            | ${tr.email_null}
+                    ${'email'}     |  ${'mail.com'}      | ${tr.email_invalid}
+                    ${'email'}     |  ${'user.mail.com'} | ${tr.email_invalid}
+                    ${'email'}     |  ${'user@mail'}     | ${tr.email_invalid}
+                    ${'password'}  |  ${null}            | ${tr.password_null} 
+                    ${'password'}  |  ${'P4ssw'}         | ${tr.password_size} 
+                    ${'password'}  |  ${'alllowercase'}  | ${tr.password_pattern} 
+                    ${'password'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern} 
+                    ${'password'}  |  ${'12344567890'}   | ${tr.password_pattern} 
+                    ${'password'}  |  ${'lowerandUPPER'} | ${tr.password_pattern} 
+                    ${'password'}  |  ${'lowerand5667'}  | ${tr.password_pattern} 
+                    ${'password'}  |  ${'UPPER44494'}    | ${tr.password_pattern} 
                 `('returns  $expectedMessage when $field is $value when language is set as turkish', 
                 async ({ field, expectedMessage, value })=>{
                 
@@ -324,36 +307,36 @@ describe('Internationalization', ()=>{
         
         // dynamic test with pipe columns
         // [email_inuse]
-            it(`returns ${email_inuse} use when same email is already in use when language is set as turkish`,
+            it(`returns ${tr.email_inuse} use when same email is already in use when language is set as turkish`,
                 async()=>{
 
                 await User.create({ ...validUser });
                 const response =  await postUser({...validUser}, { language: 'tr' });
-                expect(response.body.validationErrors.email).toBe(email_inuse);
+                expect(response.body.validationErrors.email).toBe(tr.email_inuse);
             
             });
         // [email_inuse]
     // [postUser] w/ in[validUser]
     // [postUser] w/ [validUser]
-        it(`returns success message of ${user_create_success} when signup request is valid and language is set as turkish`, 
+        it(`returns success message of ${tr.user_create_success} when signup request is valid and language is set as turkish`, 
             async ()=>{
             const response = await postUser({...validUser}, { language: 'tr' });
-            expect(response.body.message).toBe(user_create_success);
+            expect(response.body.message).toBe(tr.user_create_success);
         });
     // [postUser] w/ [validUser]
     // activation email
             
-        it(`returns ${email_failure} message when sending email fails and language is set as turkish`, 
+        it(`returns ${tr.email_failure} message when sending email fails and language is set as turkish`, 
             async ()=>{
                 
             simulateSmtpFailure = true;
             const response = await postUser({...validUser}, {language: 'tr'});
-            expect(response.body.message).toBe(email_failure);
+            expect(response.body.message).toBe(tr.email_failure);
             
         });
         // in[validUser]
 
-            it(`returns ${validation_failure} message in error response body when validation fails`,
+            it(`returns ${tr.validation_failure} message in error response body when validation fails`,
                 async ()=>{
 
                 const response = await postUser(
@@ -366,7 +349,7 @@ describe('Internationalization', ()=>{
                     {language: 'tr'}
 
                 );
-                expect(response.body.message).toBe(validation_failure);
+                expect(response.body.message).toBe(tr.validation_failure);
 
             });
 
@@ -429,10 +412,10 @@ describe('Account activation', ()=>{
         });
         it.each`
             language | tokenStatus  | message
-            ${'tr'}  | ${'wrong'}   | ${'Bu hesap daha once aktiflestirilmis olabilir ya da token hatali'}
-            ${'en'}  | ${'wrong'}   | ${'This account is either active or the token is invalid'}
-            ${'tr'}  | ${'correct'} | ${'Hesabiniz aktiflestirildi'}
-            ${'en'}  | ${'correct'} | ${'Account is activated'}
+            ${'tr'}  | ${'wrong'}   | ${tr.account_activation_failure}
+            ${'en'}  | ${'wrong'}   | ${en.account_activation_failure}
+            ${'tr'}  | ${'correct'} | ${tr.account_activation_success}
+            ${'en'}  | ${'correct'} | ${en.account_activation_success}
             `('returns $message when wrong token is $tokenStatus and language is $language', 
             async({language, tokenStatus, message})=>{
 

@@ -2,12 +2,14 @@ const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/user/User');
 const sequelize = require('../src/config/database');
+const en = require('../locales/en/translation.json');
+const tr = require('../locales/tr/translation.json');
 
 beforeAll( async ()=>{
     await sequelize.sync();
 });
-beforeEach(()=>{
-    return User.destroy({ truncate: true });
+beforeEach(async ()=>{
+    await User.destroy({ truncate: true });
 });
 
 const getUsers = ()=>{
@@ -142,8 +144,8 @@ describe('Get User', ()=>{
     // test automatically passes because express sends 404 response as a default
     it.each`
         language | message
-        ${'tr'}  | ${'Kullanici bulunamadi'}
-        ${'en'}  | ${'User not found'}
+        ${'tr'}  | ${tr.user_not_found}
+        ${'en'}  | ${en.user_not_found}
         `('returns $message for unknown user when language is set to $language', 
         async ({language, message})=> {
 
