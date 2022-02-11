@@ -21,7 +21,7 @@ const addUsers = async ()=>{
     };
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
-    await User.create(user);
+    return await User.create(user);
 
 };
 const postAuthentication = async (credentials)=>{
@@ -39,6 +39,18 @@ describe('Authentication', ()=>{
             password: 'User1password' 
         });
         expect(response.status).toBe(200);
+
+    });
+    it('returns only user id and username when login success', async ()=>{
+
+        const user = await addUsers();
+        const response = await postAuthentication({ 
+            email: 'user1@mail.com',
+            password: 'User1password'
+        });
+        expect(response.body.id).toBe(user.id);
+        expect(response.body.username).toBe(user.username);
+        expect(Object.keys(response.body)).toEqual(['id', 'username']);
 
     });
 
