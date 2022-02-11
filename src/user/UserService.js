@@ -70,7 +70,10 @@ const generateToken = (length)=>{
     const getUser = async (id)=>{
 
         const user = await User.findOne({
-            where: {id: id},
+            where: {
+                id: id,
+                inactive: false
+            },
             attributes: ['id', 'username', 'email']
         });
         if(!user){
