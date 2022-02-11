@@ -32,6 +32,7 @@ const postAuthentication = async (credentials)=>{
 describe('Authentication', ()=>{
 
     // [validUser]
+
         it('returns 200 when credentials are correct', async ()=>{
 
             await addUser();
@@ -54,8 +55,10 @@ describe('Authentication', ()=>{
             expect(Object.keys(response.body)).toEqual(['id', 'username']);
 
         });
+
     // [validUser]
     // [invalidUser]
+
         it('returns 401 when user does not exist', async ()=>{
 
             const response = await postAuthentication({ 
@@ -65,6 +68,20 @@ describe('Authentication', ()=>{
             expect(response.status).toBe(401);
 
         });
+        it('returns proper error body when authentication fails', async ()=>{
+
+            const nowInMillis = new Date().getTime();
+            const response = await postAuthentication({ 
+                email: 'user1@mail.com',
+                password: 'User1password'
+            });
+            const error = response.body;
+            expect(error.path).toBe('/api/1.0/auth');
+            expect(error.timestamp).toBeGreaterThan(nowInMillis);
+            expect(Object.keys(error)).toEqual(['path', 'timestamp', 'message']);
+
+        });
+
     // [invalidUser]
 
 });
