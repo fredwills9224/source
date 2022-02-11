@@ -11,7 +11,7 @@ beforeEach(async()=>{
     await User.destroy({ truncate: true });
 });
 
-const addUsers = async ()=>{
+const addUser = async ()=>{
 
     const user = { 
         username: 'user1',
@@ -31,27 +31,40 @@ const postAuthentication = async (credentials)=>{
 };
 describe('Authentication', ()=>{
 
-    it('returns 200 when credentials are correct', async ()=>{
+    // [validUser]
+        it('returns 200 when credentials are correct', async ()=>{
 
-        await addUsers();
-        const response = await postAuthentication({ 
-            email: 'user1@mail.com', 
-            password: 'User1password' 
+            await addUser();
+            const response = await postAuthentication({
+                email: 'user1@mail.com',
+                password: 'User1password'
+            });
+            expect(response.status).toBe(200);
+
         });
-        expect(response.status).toBe(200);
+        it('returns only user id and username when login success', async ()=>{
 
-    });
-    it('returns only user id and username when login success', async ()=>{
+            const user = await addUser();
+            const response = await postAuthentication({
+                email: 'user1@mail.com',
+                password: 'User1password'
+            });
+            expect(response.body.id).toBe(user.id);
+            expect(response.body.username).toBe(user.username);
+            expect(Object.keys(response.body)).toEqual(['id', 'username']);
 
-        const user = await addUsers();
-        const response = await postAuthentication({ 
-            email: 'user1@mail.com',
-            password: 'User1password'
         });
-        expect(response.body.id).toBe(user.id);
-        expect(response.body.username).toBe(user.username);
-        expect(Object.keys(response.body)).toEqual(['id', 'username']);
+    // [validUser]
+    // [invalidUser]
+        it('returns 401 when user does not exist', async ()=>{
 
-    });
+            const response = await postAuthentication({ 
+                email: 'user1@mail.com',
+                password: 'User1password' 
+            });
+            expect(response.status).toBe(401);
+
+        });
+    // [invalidUser]
 
 });
