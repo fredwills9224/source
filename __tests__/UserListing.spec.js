@@ -161,5 +161,14 @@ describe('Get User', ()=>{
         expect(Object.keys(error)).toEqual(['path', 'timestamp', 'message']);
 
     });
+    it('returns 200 when an active user exist', async()=>{
+
+        const user = await User.create({
+            username: 'user1', email: 'user1@mail.com', inactive: false
+        });
+        const response = await getUser(user.id);
+        expect(response.status).toBe(200);
+
+    });
 
 });
