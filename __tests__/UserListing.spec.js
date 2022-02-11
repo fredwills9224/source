@@ -181,5 +181,16 @@ describe('Get User', ()=>{
         expect(Object.keys(response.body)).toEqual(['id', 'username', 'email']);
 
     });
+    it('returns 404 when the user is inactive', async ()=>{
+
+        const user = await User.create({
+            username: 'user1',
+            email: 'user1@mail.com',
+            inactive: true
+        });
+        const response = await getUser(user.id);
+        expect(response.status).toBe(404);
+
+    });
 
 });
