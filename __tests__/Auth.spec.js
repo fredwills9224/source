@@ -154,6 +154,14 @@ describe('Authentication', ()=>{
             expect(response.status).toBe(401);
 
         });
+        // passes automatically because of [AuthenticationRouter.router.post().match]
+            it('returns 401 when password is not valid', async ()=>{
+
+                const response = await postAuthentication({ email: 'user1@mail.com' });
+                expect(response.status).toBe(401);
+
+            });
+        // passes automatically because of [AuthenticationRouter.router.post().match]
 
     // [invalidUser]
 
