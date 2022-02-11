@@ -148,6 +148,12 @@ describe('Authentication', ()=>{
             expect(response.body.message).toBe(message);
 
         });
+        it('returns 401 when e-mail is not valid', async ()=>{
+
+            const response = await postAuthentication({ password: 'User1password' });
+            expect(response.status).toBe(401);
+
+        });
 
     // [invalidUser]
 
