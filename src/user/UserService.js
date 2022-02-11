@@ -69,7 +69,10 @@ const generateToken = (length)=>{
 // [getUser]
     const getUser = async (id)=>{
 
-        const user = await User.findOne({where: {id: id}});
+        const user = await User.findOne({
+            where: {id: id},
+            attributes: ['id', 'username', 'email']
+        });
         if(!user){
             throw new UserNotFoundException;
         }
