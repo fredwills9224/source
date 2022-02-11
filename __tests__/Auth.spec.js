@@ -10,15 +10,14 @@ beforeAll(async ()=>{
 beforeEach(async()=>{
     await User.destroy({ truncate: true });
 });
+const activeUser = { 
+    username: 'user1',
+    email: 'user1@mail.com',
+    password: 'User1password',
+    inactive: false
+};
+const addUser = async (user = {...activeUser})=>{
 
-const addUser = async ()=>{
-
-    const user = { 
-        username: 'user1',
-        email: 'user1@mail.com',
-        password: 'User1password',
-        inactive: false
-    };
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
     return await User.create(user);
@@ -107,6 +106,16 @@ describe('Authentication', ()=>{
                 password: 'password'
             });
             expect(response.status).toBe(401);
+
+        });
+        it('returns 403 when logging in with an inactive account', async()=>{
+
+            await addUser({...activeUser, inactive: true});
+            const response = await postAuthentication({
+                email: 'user1@mail.com',
+                password: 'User1password'
+            });
+            expect(response.status).toBe(403);
 
         });
 
