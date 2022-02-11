@@ -12,5 +12,6 @@
   "account_activation_failure": "Bu hesap daha once aktiflestirilmis olabilir ya da token hatali",
   "account_activation_success": "Hesabiniz aktiflestirildi",
   "validation_failure": "Girilen degerler uygun degil",
-  "user_not_found": "Kullanici bulunamadi"
+  "user_not_found": "Kullanici bulunamadi",
+  "authentication_failure": "Kullanici bilgileri hatali"
 }
