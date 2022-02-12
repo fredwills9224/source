@@ -14,5 +14,6 @@
   "validation_failure": "Girilen degerler uygun degil",
   "user_not_found": "Kullanici bulunamadi",
   "authentication_failure": "Kullanici bilgileri hatali",
-  "inactive_authentication_failure": "Hesabiniz aktif degil"
+  "inactive_authentication_failure": "Hesabiniz aktif degil",
+  "unauthorized_user_update": "Kullaniciyi guncelleme yetkiniz bulunmamaktadir"
 }
