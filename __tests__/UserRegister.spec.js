@@ -67,18 +67,26 @@ describe('User Registration', ()=>{
         it('returns 200 OK when signup request is valid', async ()=>{
             const response = await postUser();
             expect(response.status).toBe(200);
-        }); 
+        }, 
+            // setting timeout (in tutorial but unnecessary for my test)
+                // 15000
+            // setting timeout (in tutorial but unnecessary for my test)
+        ); 
         it('returns success message when signup request is valid', async ()=>{
             const response = await postUser();
             expect(response.body.message).toBe(en.user_create_success);
-        });
+        }, 
+            // 15000
+        );
         it('saves the user to database', async ()=> {
 
             await postUser();
             const userList = await User.findAll();
             expect(userList.length).toBe(1);
 
-        });
+        }, 
+            // 15000
+        );
         it('saves the username and email to database', async ()=>{
 
             await postUser();
