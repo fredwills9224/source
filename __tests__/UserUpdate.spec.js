@@ -13,6 +13,15 @@ beforeEach(async ()=>{
     await User.destroy({ truncate: true });
 });
 
+const pustUser = (id = 5, body = null, options = {})=>{
+
+    const agent = request(app).put('/api/1.0/users/' + id);
+    if(options.language){
+        agent.set('Accept-Language', options.language);
+    }
+    return agent.send(body);
+
+};
 describe('User Update', ()=>{
 
     // in[validUser]
@@ -31,11 +40,7 @@ describe('User Update', ()=>{
             async ({ language, message })=>{
 
             const nowInMillis = new Date().getTime();
-            const response = await request(app)
-                .put('/api/1.0/users/5')
-                .set('Accept-Language', language)
-                .send()
-            ;
+            const response = await pustUser(5, null, {language});
             expect(response.body.path).toBe('/api/1.0/users/5');
             expect(response.body.timestamp).toBeGreaterThan(nowInMillis);
             expect(response.body.message).toBe(message);
