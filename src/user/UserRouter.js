@@ -94,4 +94,9 @@ const pagination = require('../middleware/pagination');
 
     });
 // [User].findById
+// [User].findByIdAndUpdate
+    router.put('/api/1.0/users/:id', (req, res)=>{
+        return res.status(403).send();
+    });
+// [User].findByIdAndUpdate
 module.exports = router;
