@@ -166,5 +166,19 @@ describe('Authentication', ()=>{
         // passes automatically because of [AuthenticationRouter.router.post().match]
 
     // [invalidUser]
+    // [validUser]
+   
+        it('returns token in response body when credentials are correct', async()=>{
+
+            await addUser();
+            const response = await postAuthentication({
+                email: 'user1@mail.com',
+                password: 'User1password'
+            });
+            expect(response.body.token).not.toBeUndefined();
+
+        });
+    
+    // [validUser]
 
 });
