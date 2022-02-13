@@ -105,7 +105,7 @@ const bcrypt = require('bcrypt');
             const encoded = authorization.substring(6);
             const decoded = Buffer.from(encoded, 'base64').toString('ascii');
             const [ email, password ] = decoded.split(':');
-            const user = await UserService.findByEmail(email)
+            const user = await UserService.findByEmail(email);
             if(!user){
                 return next(new  ForbiddenException('unauthorized_user_update'));
             }
