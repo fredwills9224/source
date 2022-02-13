@@ -178,6 +178,28 @@ describe('User Update', ()=>{
             expect(response.status).toBe(200);
 
         });
+        it('updates username in database when valid update request is sent from authorized user',
+            async ()=>{
+
+            const savedUser = await addUser();
+            const validUpdate = { username: 'user1-updated' };
+            await putUser(
+                
+                savedUser.id,
+                validUpdate,
+                { 
+                    auth: 
+                    {
+                        email: savedUser.email,
+                        password: 'User1password'
+                    } 
+                }
+
+            );
+            const inDBUser = await User.findOne({ where: { id: savedUser.id } });
+            expect(inDBUser.username).toBe(validUpdate.username);
+
+        });
 
     // [validUser]
 
