@@ -122,6 +122,7 @@ const bcrypt = require('bcrypt');
             if(!match){
                 return next(new  ForbiddenException('unauthorized_user_update'));
             }
+            await UserService.updateUser(req.params.id, req.body);
             return res.send();
         
         }
