@@ -29,7 +29,7 @@ const addUsers = async (activeUserCount, inactiveUserCount=0)=>{
     for(let i=0; i<activeUserCount+inactiveUserCount; i++){
         await User.create({
             username: `user${i +1}`,
-            email: `users${i +1}@mail.com`,
+            email: `user${i +1}@mail.com`,
             inactive: i>= activeUserCount,
             password: hashedPassword
         });

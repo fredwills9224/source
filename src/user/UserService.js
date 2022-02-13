@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const EmailException = require('../email/EmailException');
 const EmailService = require('../email/EmailService');
+const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 const InvalidTokenException = require('./InvalidTokenException');
 const UserNotFoundException = require('./UserNotFoundException');
@@ -48,10 +49,15 @@ const generateToken = (length)=>{
 // find [user] by token, set [inactive] prop to false + [save]
 // [getUsers]
 
-    const getUsers = async (page, size)=>{
+    const getUsers = async (page, size, authenticatedUser)=>{
         
         const usersWithCount = await User.findAndCountAll({
-            where: { inactive: false },
+            where: { 
+                inactive: false,
+                id:{
+                    [Sequelize.Op.not]: authenticatedUser ? authenticatedUser.id : 0
+                } 
+            },
             attributes: ['id', 'username', 'email'],
             limit: size,
             offset: page*size

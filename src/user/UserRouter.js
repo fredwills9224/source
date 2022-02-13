@@ -76,10 +76,11 @@ const basicAuthentication = require ('../middleware/basicAuthentication');
 
 // [token].post
 // [User].findAll
-    router.get('/api/1.0/users', pagination, async (req, res)=>{        
+    router.get('/api/1.0/users', pagination, basicAuthentication, async (req, res)=>{        
         
+        const authenticatedUser = req.authenticatedUser;
         const { page, size } = req.pagination;
-        const users = await UserService.getUsers(page, size);
+        const users = await UserService.getUsers(page, size, authenticatedUser);
         res.send(users);
 
     });
