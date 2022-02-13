@@ -155,5 +155,30 @@ describe('User Update', ()=>{
         });
 
     // in[validUser]
+    // [validUser]
+
+        it('returns 200 ok when valid update request sent from authorized user',
+            async ()=>{
+
+            const savedUser = await addUser();
+            const validUpdate = { username: 'user1-updated' };
+            const response = await putUser(
+                
+                savedUser.id,
+                validUpdate,
+                { 
+                    auth: 
+                    {
+                        email: savedUser.email,
+                        password: 'User1password'
+                    } 
+                }
+
+            );
+            expect(response.status).toBe(200);
+
+        });
+
+    // [validUser]
 
 });
