@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
-const bcrypt = require('bcrypt');
+const basicAuthentication = require ('../middleware/basicAuthentication');
 
 // [User].post
 
@@ -97,36 +97,15 @@ const bcrypt = require('bcrypt');
     });
 // [User].findById
 // [User].findByIdAndUpdate
-    router.put('/api/1.0/users/:id', async (req, res, next)=>{
+    router.put('/api/1.0/users/:id', basicAuthentication, async (req, res, next)=>{
         
-        const authorization = req.headers.authorization;
-        if(authorization){
-
-            const encoded = authorization.substring(6);
-            const decoded = Buffer.from(encoded, 'base64').toString('ascii');
-            const [ email, password ] = decoded.split(':');
-            const user = await UserService.findByEmail(email);
-            if(!user){
-                return next(new  ForbiddenException('unauthorized_user_update'));
-            }
-            // number - [user.id] vs string - [req.params.id] comparison unnecessary truthy
-                // eslint-disable-next-line eqeqeq
-                if(user.id != req.params.id){
-                    return next(new  ForbiddenException('unauthorized_user_update'));
-                }
-            // number - [user.id] vs string - [req.params.id] comparison unnecessary truthy
-            if(user.inactive){
-                return next(new  ForbiddenException('unauthorized_user_update'));
-            }
-            const match = await bcrypt.compare(password, user.password);
-            if(!match){
-                return next(new  ForbiddenException('unauthorized_user_update'));
-            }
-            await UserService.updateUser(req.params.id, req.body);
-            return res.send();
-        
+        const authenticatedUser = req.authenticatedUser;
+        // eslint-disable-next-line eqeqeq
+        if(!authenticatedUser  || authenticatedUser.id != req.params.id){
+            return next(new ForbiddenException('unauthorized_user_update'));
         }
-        return next(new  ForbiddenException('unauthorized_user_update'));
+        await UserService.updateUser(req.params.id, req.body);
+        return res.send();
     
     });
 // [User].findByIdAndUpdate
