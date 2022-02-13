@@ -26,24 +26,20 @@ const addUser = async (user = {...activeUser})=>{
     return await User.create(user);
 
 };
-const putUser = (id = 5, body = null, options = {})=>{
+const putUser = async (id = 5, body = null, options = {})=>{
 
-    const agent = request(app).put('/api/1.0/users/' + id);
+    let agent = request(app);
+    let token;
+    if(options.auth){
+        const response = await agent.post('/api/1.0/auth').send(options.auth);
+        token = response.body.token;
+    }
+    agent = request(app).put('/api/1.0/users/' + id);
     if(options.language){
         agent.set('Accept-Language', options.language);
     }
-    if(options.auth){
-
-        const { email, password } = options.auth;
-        // implicit authorization
-            // const merged = `${email}:${password}`;
-            // const base64 = Buffer.from(merged).toString('base64');
-            // agent.set('Authorization', `Basic ${base64}`);
-        // implicit authorization
-        // [supertest] auth
-            agent.auth(email, password);
-        // [supertest] auth
-    
+    if(token){
+        agent.set('Authorization', `Bearer ${token}`);
     }
     return agent.send(body);
 
@@ -178,7 +174,7 @@ describe('User Update', ()=>{
             expect(response.status).toBe(200);
 
         });
-        it('updates username in database when valid update request is sent from authorized user',
+        fit('updates username in database when valid update request is sent from authorized user',
             async ()=>{
 
             const savedUser = await addUser();
