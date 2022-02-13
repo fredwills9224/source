@@ -96,8 +96,14 @@ const pagination = require('../middleware/pagination');
     });
 // [User].findById
 // [User].findByIdAndUpdate
-    router.put('/api/1.0/users/:id', ()=>{
+    router.put('/api/1.0/users/:id', (req, res)=>{
+        
+        const authorization = req.headers.authorization;
+        if(authorization){
+            return res.send();
+        }
         throw new  ForbiddenException('unauthorized_user_update');
+    
     });
 // [User].findByIdAndUpdate
 module.exports = router;
