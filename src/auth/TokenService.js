@@ -1,5 +1,6 @@
 const { randomString } = require('../shared/generator');
 const Token = require('./Token');
+const Sequelize = require('sequelize');
 
 const createToken = async (user)=>{
     
@@ -12,8 +13,16 @@ const createToken = async (user)=>{
 
 };
 const verify = async (token)=>{
-    
-    const tokenInDB = await Token.findOne({ where: {token: token} });
+
+    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 *1000);
+    const tokenInDB = await Token.findOne({ 
+        where: {
+            token: token,
+            lastUsedAt:{
+                [Sequelize.Op.gt]: oneWeekAgo
+            }
+        } 
+    });
     const userId = tokenInDB.userId;
     return { id: userId };
 
