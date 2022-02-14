@@ -7,7 +7,8 @@ const createToken = async (user)=>{
     const token = randomString(32);
     await Token.create({
         token: token,
-        userId: user.id
+        userId: user.id,
+        lastUsedAt: new Date()
     });
     return token;
 
