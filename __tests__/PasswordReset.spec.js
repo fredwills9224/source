@@ -16,7 +16,7 @@ describe('Password Reset Request', ()=>{
     });
     it.each`
         language | message
-        ${'tr'}  | ${tr.email_inuse}
+        ${'tr'}  | ${tr.email_not_inuse}
         ${'en'}  | ${en.email_not_inuse}
         `('returns error body with $message for unknown email for password reset request when language is $language',
         async ({ language, message })=>{ 
@@ -30,7 +30,7 @@ describe('Password Reset Request', ()=>{
         expect(response.body.path).toBe('/api/1.0/password-reset');
         expect(response.body.timestamp).toBeGreaterThan(nowInMillis);
         expect(response.body.message).toBe(message);
-        
+
     });
 
 

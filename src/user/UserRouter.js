@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
+const NotFoundException = require('../error/NotFoundException');
 
 // [User].post
 
@@ -126,7 +127,11 @@ const pagination = require('../middleware/pagination');
 // [User].findByIdAndDelete
 module.exports = router;
 
+router.post('/api/1.0/password-reset', ()=>{
+    
+    throw new NotFoundException('email_not_inuse');
 
+});
 
 
 
