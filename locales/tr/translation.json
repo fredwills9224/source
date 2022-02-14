@@ -15,5 +15,6 @@
   "user_not_found": "Kullanici bulunamadi",
   "authentication_failure": "Kullanici bilgileri hatali",
   "inactive_authentication_failure": "Hesabiniz aktif degil",
-  "unauthorized_user_update": "Kullaniciyi guncelleme yetkiniz bulunmamaktadir"
+  "unauthorized_user_update": "Kullaniciyi guncelleme yetkiniz bulunmamaktadir",
+  "unauthorized_user_delete": "Kullaniciyi silme yetkiniz bulunmamaktadir"
 }
