@@ -110,4 +110,11 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
     
     });
 // [User].findByIdAndUpdate
+// [User].findByIdAndDelete
+
+    router.delete('/api/1.0/users/:id', (req, res)=>{
+        res.status(403).send();
+    });
+
+// [User].findByIdAndDelete
 module.exports = router;
