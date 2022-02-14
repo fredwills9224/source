@@ -112,9 +112,26 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 // [User].findByIdAndUpdate
 // [User].findByIdAndDelete
 
-    router.delete('/api/1.0/users/:id', ()=>{
-        throw new ForbiddenException('unauthorized_user_delete');
+    router.delete('/api/1.0/users/:id', tokenAuthentication, (req, res)=>{
+        
+        const authenticatedUser = req.authenticatedUser;
+        // eslint-disable-next-line eqeqeq
+        if(!authenticatedUser  || authenticatedUser.id != req.params.id){
+            throw new ForbiddenException('unauthorized_user_delete');
+        }
+        res.send();
+
     });
 
 // [User].findByIdAndDelete
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
