@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/user/User');
+const Token = require('../src/auth/Token');
 const sequelize = require('../src/config/database');
 const bcrypt = require('bcrypt');
 const en = require('../locales/en/translation.json');
@@ -129,6 +130,21 @@ describe('User Delete', ()=>{
             await deleteUser(savedUser.id, {token: token});
             const inDBUser = await User.findOne({ where: { id: savedUser.id } });
             expect(inDBUser).toBeNull();
+
+        });
+        it('deletes token from database when delete user request sent from authorized user',
+            async ()=>{
+
+            const savedUser = await addUser();
+            const token = await auth({
+                auth:{
+                    email: 'user1@mail.com',
+                    password: 'User1password'
+                }
+            });
+            await deleteUser(savedUser.id, {token: token});
+            const tokenInDB = await Token.findOne({where: { token: token }});
+            expect(tokenInDB).toBeNull();
 
         });
 
