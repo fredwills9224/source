@@ -112,8 +112,8 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 // [User].findByIdAndUpdate
 // [User].findByIdAndDelete
 
-    router.delete('/api/1.0/users/:id', (req, res)=>{
-        res.status(403).send();
+    router.delete('/api/1.0/users/:id', ()=>{
+        throw new ForbiddenException('unauthorized_user_delete');
     });
 
 // [User].findByIdAndDelete
