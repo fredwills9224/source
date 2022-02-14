@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
-const basicAuthentication = require ('../middleware/basicAuthentication');
 const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // [User].post
@@ -77,7 +76,7 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // [token].post
 // [User].findAll
-    router.get('/api/1.0/users', pagination, basicAuthentication, async (req, res)=>{        
+    router.get('/api/1.0/users', pagination, tokenAuthentication, async (req, res)=>{        
         
         const authenticatedUser = req.authenticatedUser;
         const { page, size } = req.pagination;
