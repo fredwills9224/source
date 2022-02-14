@@ -6,6 +6,7 @@ const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
 const tokenAuthentication = require('../middleware/tokenAuthentication');
+const TokenService = require('../auth/TokenService');
 
 // [User].post
 
@@ -120,6 +121,9 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
             return next(new ForbiddenException('unauthorized_user_delete'));
         }
         await UserService.deleteUser(req.params.id);
+        const authorization = req.headers.authorization;
+        const token = authorization.substring(7);
+        await TokenService.deleteToken(token);
         res.send();
 
     });
