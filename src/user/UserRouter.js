@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
-const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // [User].post
 
@@ -76,7 +75,7 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // [token].post
 // [User].findAll
-    router.get('/api/1.0/users', pagination, tokenAuthentication, async (req, res)=>{        
+    router.get('/api/1.0/users', pagination, async (req, res)=>{        
         
         const authenticatedUser = req.authenticatedUser;
         const { page, size } = req.pagination;
@@ -98,7 +97,7 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
     });
 // [User].findById
 // [User].findByIdAndUpdate
-    router.put('/api/1.0/users/:id', tokenAuthentication, async (req, res, next)=>{
+    router.put('/api/1.0/users/:id', async (req, res, next)=>{
         
         const authenticatedUser = req.authenticatedUser;
         // eslint-disable-next-line eqeqeq
@@ -112,7 +111,7 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 // [User].findByIdAndUpdate
 // [User].findByIdAndDelete
 
-    router.delete('/api/1.0/users/:id', tokenAuthentication, async (req, res, next)=>{
+    router.delete('/api/1.0/users/:id', async (req, res, next)=>{
         
         const authenticatedUser = req.authenticatedUser;
         // eslint-disable-next-line eqeqeq
