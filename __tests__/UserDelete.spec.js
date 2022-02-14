@@ -102,27 +102,20 @@ describe('User Delete', ()=>{
     // // in[validUser]
     // // [validUser]
 
-    //     it('returns 200 ok when valid update request sent from authorized user',
-    //         async ()=>{
+        it('returns 200 ok when valid delete request sent from authorized user',
+            async ()=>{
 
-    //         const savedUser = await addUser();
-    //         const validUpdate = { username: 'user1-updated' };
-    //         const response = await putUser(
-                
-    //             savedUser.id,
-    //             validUpdate,
-    //             { 
-    //                 auth: 
-    //                 {
-    //                     email: savedUser.email,
-    //                     password: 'User1password'
-    //                 } 
-    //             }
+            const savedUser = await addUser();
+            const token = await auth({
+                auth:{
+                    email: 'user1@mail.com',
+                    password: 'User1password'
+                }
+            });
+            const response = await deleteUser(savedUser.id, {token: token});
+            expect(response.status).toBe(200);
 
-    //         );
-    //         expect(response.status).toBe(200);
-
-    //     });
+        });
     //     it('updates username in database when valid update request is sent from authorized user',
     //         async ()=>{
 
