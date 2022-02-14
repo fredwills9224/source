@@ -26,7 +26,7 @@ router.post('/api/1.0/auth',
     }if(user.inactive){
         return next(new ForbiddenException());
     }
-    const token = TokenService.createToken(user);
+    const token = await TokenService.createToken(user);
     res.send({
         id: user.id,
         username: user.username,
