@@ -95,5 +95,16 @@ const { randomString } = require('../shared/generator');
     };
 
 // [updateUser]
+// [deletUser]
 
-module.exports = { save, findByEmail, activate, getUsers, getUser, updateUser };
+const deleteUser = async (id)=>{
+    await User.destroy({ where: { id: id } });
+};
+
+// [deletUser]
+
+module.exports = { 
+    save, findByEmail, activate,
+    getUsers, getUser, updateUser,
+    deleteUser
+};

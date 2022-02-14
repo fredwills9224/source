@@ -112,13 +112,14 @@ const tokenAuthentication = require('../middleware/tokenAuthentication');
 // [User].findByIdAndUpdate
 // [User].findByIdAndDelete
 
-    router.delete('/api/1.0/users/:id', tokenAuthentication, (req, res)=>{
+    router.delete('/api/1.0/users/:id', tokenAuthentication, async (req, res, next)=>{
         
         const authenticatedUser = req.authenticatedUser;
         // eslint-disable-next-line eqeqeq
         if(!authenticatedUser  || authenticatedUser.id != req.params.id){
-            throw new ForbiddenException('unauthorized_user_delete');
+            return next(new ForbiddenException('unauthorized_user_delete'));
         }
+        await UserService.deleteUser(req.params.id);
         res.send();
 
     });
