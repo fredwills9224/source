@@ -53,7 +53,7 @@ describe('User Update', ()=>{
 
         it('returns forbidden when request sent without basic authorization', async ()=>{
 
-            const response = await request(app).put('/api/1.0/users/5').send();
+            const response = await putUser();
             expect(response.status).toBe(403);
 
         });
