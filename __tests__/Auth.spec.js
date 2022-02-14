@@ -262,5 +262,24 @@ describe('Token Expiration', ()=>{
         ;
 
     });
+    it('refreshes lastUsedAt when unexpired token is used for unauthenticated endpoint', 
+        async ()=>{
+
+        const savedUser = await addUser();
+        const token = 'test-token';
+        const fourDaysAgo = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000);
+        await Token.create({
+            token: token,
+            userId: savedUser.id,
+            lastUsedAt: fourDaysAgo
+        });
+        const rightBeforeSendingRequest = new Date();
+        await request(app).get('/api/1.0/users/5').set('Authorization', `Bearer ${token}`);
+        const tokenInDB = await Token.findOne({ where: {token: token} });
+        expect(tokenInDB.lastUsedAt.getTime())
+            .toBeGreaterThan(rightBeforeSendingRequest.getTime())
+        ;
+
+    });
 
 });
