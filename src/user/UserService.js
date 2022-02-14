@@ -7,6 +7,7 @@ const sequelize = require('../config/database');
 const InvalidTokenException = require('./InvalidTokenException');
 const UserNotFoundException = require('./UserNotFoundException');
 const { randomString } = require('../shared/generator');
+const TokenService = require('../auth/TokenService');
 
 // [save]s [user] with [hashedPassword]
     const save = async(body)=>{
@@ -99,6 +100,7 @@ const { randomString } = require('../shared/generator');
 
 const deleteUser = async (id)=>{
     await User.destroy({ where: { id: id } });
+    await TokenService.deleteTokensOfUser(id);
 };
 
 // [deletUser]
