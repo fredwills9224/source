@@ -6,6 +6,7 @@ const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
 const basicAuthentication = require ('../middleware/basicAuthentication');
+const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // [User].post
 
@@ -98,7 +99,7 @@ const basicAuthentication = require ('../middleware/basicAuthentication');
     });
 // [User].findById
 // [User].findByIdAndUpdate
-    router.put('/api/1.0/users/:id', basicAuthentication, async (req, res, next)=>{
+    router.put('/api/1.0/users/:id', tokenAuthentication, async (req, res, next)=>{
         
         const authenticatedUser = req.authenticatedUser;
         // eslint-disable-next-line eqeqeq

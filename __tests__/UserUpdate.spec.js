@@ -174,7 +174,7 @@ describe('User Update', ()=>{
             expect(response.status).toBe(200);
 
         });
-        fit('updates username in database when valid update request is sent from authorized user',
+        it('updates username in database when valid update request is sent from authorized user',
             async ()=>{
 
             const savedUser = await addUser();
