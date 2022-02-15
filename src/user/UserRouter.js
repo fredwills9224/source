@@ -126,7 +126,7 @@ const pagination = require('../middleware/pagination');
 // [User].findByIdAndDelete
 module.exports = router;
 
-router.post('/api/1.0/password-reset', check('email').isEmail().withMessage('email_invalid'),
+router.post('/api/1.0/user/password', check('email').isEmail().withMessage('email_invalid'),
     async (req, res, next)=>{
     
     const errors = validationResult(req);
