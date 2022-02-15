@@ -127,8 +127,13 @@ const NotFoundException = require('../error/NotFoundException');
 // [User].findByIdAndDelete
 module.exports = router;
 
-router.post('/api/1.0/password-reset', ()=>{
+router.post('/api/1.0/password-reset', check('email').isEmail().withMessage('email_invalid'),
+    (req)=>{
     
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        throw new ValidationException(errors.array());
+    }
     throw new NotFoundException('email_not_inuse');
 
 });
