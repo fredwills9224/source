@@ -142,20 +142,21 @@ const User = require('./User');
         }
         
     });
-    router.put('/api/1.0/user/password', 
-        async (req, res, next)=>{
-            
-            const user = await User.findOne({
-                where: {
-                    passwordResetToken: req.body.passwordResetToken
-                }
-            });
-            if(!user){
-                return next(new ForbiddenException('unauthorized_password_reset'));
-            }
-            next();
 
-        },
+    const passwordResetTokenValidator = async (req, res, next)=>{
+
+        const user = await User.findOne({
+            where: {
+                passwordResetToken: req.body.passwordResetToken
+            }
+        });
+        if(!user){
+            return next(new ForbiddenException('unauthorized_password_reset'));
+        }
+        next();
+
+    };
+    router.put('/api/1.0/user/password', passwordResetTokenValidator,
         check('password')
             .notEmpty()
             .withMessage('password_null')
