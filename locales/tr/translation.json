@@ -17,5 +17,7 @@
   "inactive_authentication_failure": "Hesabiniz aktif degil",
   "unauthorized_user_update": "Kullaniciyi guncelleme yetkiniz bulunmamaktadir",
   "unauthorized_user_delete": "Kullaniciyi silme yetkiniz bulunmamaktadir",
-  "email_not_inuse": "E-posta bulunamadi"
+  "email_not_inuse": "E-posta bulunamadi",
+  "password_reset_request_success": "Sifrenizi yenilemek icin e-postanizi kontrol edin"
+
 }

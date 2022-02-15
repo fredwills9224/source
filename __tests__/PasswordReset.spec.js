@@ -82,6 +82,18 @@ describe('Password Reset Request', ()=>{
             expect(response.status).toBe(200);
 
         });
+        it.each`
+            language  |  message
+            ${'tr'}   | ${tr.password_reset_request_success}
+            ${'en'}   | ${en.password_reset_request_success}
+            `('returns success response body with $message for known email for password reset request when language is set as $language',
+            async ({language, message})=>{
+
+            const user = await addUser();
+            const response = await postPasswordReset(user.email, {language: language} );
+            expect(response.body.message).toBe(message);
+
+        });
 
     // [validUser]
 
