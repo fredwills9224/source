@@ -5,12 +5,48 @@ const sequelize = require('../src/config/database');
 const bcrypt = require('bcrypt');
 const en = require('../locales/en/translation.json');
 const tr = require('../locales/tr/translation.json');
+const SMTPServer = require('smtp-server').SMTPServer;
 
+let lastMail, server;
+let simulateSmtpFailure = false;
 beforeAll(async ()=>{
+
+    server = new SMTPServer({
+        
+        authOptional: true,
+        onData(stream, session, callback){
+            
+            let mailBody;
+            stream.on('data', (data)=>{
+                mailBody += data.toString();
+            });
+            stream.on('end', ()=>{
+
+                if(simulateSmtpFailure){
+                    const err = new Error('Invalid mailbox');
+                    err.responseCode = 553;
+                    return callback(err);
+                }
+                lastMail = mailBody;
+                callback();
+            
+            });
+
+        }
+
+    });
+    await server.listen(8587, 'localhost');
     await sequelize.sync();
+    //jest.setTimeout(20000);
+
 });
 beforeEach(async ()=>{
+    simulateSmtpFailure = false;
     await User.destroy({ truncate: { cascade: true } });
+});
+afterAll(async ()=>{
+    await server.close();
+    //jest.setTimeout(5000);
 });
 
 const activeUser = { 
@@ -101,6 +137,16 @@ describe('Password Reset Request', ()=>{
             await postPasswordReset(user.email);
             const userInDB = await User.findOne({ where: {email: user.email} });
             expect(userInDB.passwordResetToken).toBeTruthy();
+
+        });
+        it('sends a password reset email with passwordResetToken', async ()=>{
+
+            const user = await addUser();
+            await postPasswordReset(user.email);
+            const userInDB = await User.findOne({ where: {email: user.email} });
+            const passwordResetToken = userInDB.passwordResetToken;
+            expect(lastMail).toContain('user1@mail.com');
+            expect(lastMail).toContain(passwordResetToken);
 
         });
 
