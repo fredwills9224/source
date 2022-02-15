@@ -162,8 +162,7 @@ const User = require('./User');
             }
         });
         if(!errors.isEmpty() && user){
-            // return next(new ValidationException(errors.array()));
-            return res.status(400).send();
+            return next(new ValidationException(errors.array()));
         }
         next(new ForbiddenException('unauthorized_password_reset'));
     
