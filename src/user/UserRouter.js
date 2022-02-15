@@ -143,6 +143,19 @@ const User = require('./User');
         
     });
     router.put('/api/1.0/user/password', 
+        async (req, res, next)=>{
+            
+            const user = await User.findOne({
+                where: {
+                    passwordResetToken: req.body.passwordResetToken
+                }
+            });
+            if(!user){
+                return next(new ForbiddenException('unauthorized_password_reset'));
+            }
+            next();
+
+        },
         check('password')
             .notEmpty()
             .withMessage('password_null')
@@ -155,17 +168,11 @@ const User = require('./User');
         ,
         async (req, res, next)=>{
         
-        const errors = validationResult(req);
-        const user = await User.findOne({
-            where: {
-                passwordResetToken: req.body.passwordResetToken
-            }
-        });
-        if(!errors.isEmpty() && user){
+        const errors = validationResult(req);        
+        if(!errors.isEmpty()){
             return next(new ValidationException(errors.array()));
         }
-        next(new ForbiddenException('unauthorized_password_reset'));
-    
+
     });
 
 // [password] reset request
