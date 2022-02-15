@@ -173,6 +173,7 @@ const User = require('./User');
         if(!errors.isEmpty()){
             return next(new ValidationException(errors.array()));
         }
+        res.send();
 
     });
 
