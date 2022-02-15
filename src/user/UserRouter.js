@@ -124,7 +124,6 @@ const pagination = require('../middleware/pagination');
     });
 
 // [User].findByIdAndDelete
-module.exports = router;
 
 router.post('/api/1.0/user/password', check('email').isEmail().withMessage('email_invalid'),
     async (req, res, next)=>{
@@ -142,12 +141,8 @@ router.post('/api/1.0/user/password', check('email').isEmail().withMessage('emai
 
 });
 
+router.put('/api/1.0/user/password', (req, res)=>{
+    res.status(403).send();
+});
 
-
-
-
-
-
-
-
-
+module.exports = router;
