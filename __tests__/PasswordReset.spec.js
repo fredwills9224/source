@@ -177,4 +177,18 @@ describe('Password Reset Request', ()=>{
 });
 // `may run into a condition where user doesn't respond to email for whatever reason and
 // their account is never activated so a schedule task can be created to remove inactive accounts
-// after a specific amount of time` 
+// after a specific amount of time`
+describe('Password Update', ()=>{
+
+    it('returns 403 when password update request does not have the valid password reset token',
+        async ()=>{
+
+        const response = await request(app).put('/api/1.0/user/password').send({
+            password: 'User1password',
+            passwordResetToken: 'abcd'
+        });
+        expect(response.status).toBe(403);
+
+    });
+
+});
