@@ -240,4 +240,40 @@ describe('Password Update', ()=>{
 
     });
 
+// dynamic test with pipe columns
+            
+    it.each`
+            language |  value              | message
+            ${'en'}  |  ${null}            | ${en.password_null} 
+            ${'en'}  |  ${'P4ssw'}         | ${en.password_size} 
+            ${'en'}  |  ${'alllowercase'}  | ${en.password_pattern} 
+            ${'en'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern} 
+            ${'en'}  |  ${'12344567890'}   | ${en.password_pattern} 
+            ${'en'}  |  ${'lowerandUPPER'} | ${en.password_pattern} 
+            ${'en'}  |  ${'lowerand5667'}  | ${en.password_pattern} 
+            ${'en'}  |  ${'UPPER44494'}    | ${en.password_pattern} 
+            ${'tr'}  |  ${null}            | ${tr.password_null} 
+            ${'tr'}  |  ${'P4ssw'}         | ${tr.password_size} 
+            ${'tr'}  |  ${'alllowercase'}  | ${tr.password_pattern} 
+            ${'tr'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern} 
+            ${'tr'}  |  ${'12344567890'}   | ${tr.password_pattern} 
+            ${'tr'}  |  ${'lowerandUPPER'} | ${tr.password_pattern} 
+            ${'tr'}  |  ${'lowerand5667'}  | ${tr.password_pattern} 
+            ${'tr'}  |  ${'UPPER44494'}    | ${tr.password_pattern} 
+        `('returns password validation error $message when language is set to $language and the value is $value', 
+        async ({ language, message, value })=>{
+
+        const user = await addUser();
+        user.passwordResetToken = 'test-token';
+        await user.save();
+        const response = await putPasswordUpdate({
+            password: value,
+            passwordResetToken: 'test-token'
+        }, {language: language});
+        expect(response.body.validationErrors.password).toBe(message);
+
+    });
+
+// dynamic test with pipe columns
+
 });
