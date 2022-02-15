@@ -189,102 +189,105 @@ describe('Password Reset Request', ()=>{
 // after a specific amount of time`
 describe('Password Update', ()=>{
 
-    it('returns 403 when password update request does not have the valid password reset token',
-        async ()=>{
+    // invalid [passwordUpdate]
 
-        const response = await putPasswordUpdate({
-            password: 'User1password',
-            passwordResetToken: 'abcd'
+        it('returns 403 when password update request does not have the valid password reset token',
+            async ()=>{
+
+            const response = await putPasswordUpdate({
+                password: 'User1password',
+                passwordResetToken: 'abcd'
+            });
+            expect(response.status).toBe(403);
+
         });
-        expect(response.status).toBe(403);
-
-    });
-    it.each`
-            language | message
-            ${'tr'}  | ${tr.unauthorized_password_reset}
-            ${'en'}  | ${en.unauthorized_password_reset}
-        `('returns error body with $message when language is set to $language after trying to update with invalid token',
-        async ({language, message})=>{
-
-        const nowInMillis = new Date().getTime();
-        const response = await putPasswordUpdate({
-            password: 'User1password',
-            passwordResetToken: 'abcd'
-        }, { language });
-        expect(response.body.path).toBe('/api/1.0/user/password');
-        expect(response.body.timestamp).toBeGreaterThan(nowInMillis);
-        expect(response.body.message).toBe(message);
-
-    });
-    it('returns 403 when password update request with invalid password pattern and the reset token is invalid',
-        async ()=>{
-
-        const response = await putPasswordUpdate({
-            password: 'not-valid',
-            passwordResetToken: 'abcd'
-        });
-        expect(response.status).toBe(403);
-
-    });
-    it('returns 400 when trying to update with invalid password and the reset token is valid',
-        async ()=>{
-
-        const user = await addUser();
-        user.passwordResetToken = 'test-token';
-        await user.save();
-        const response = await putPasswordUpdate({
-            password: 'not-valid',
-            passwordResetToken: 'test-token'
-        });
-        expect(response.status).toBe(400);
-
-    });
-    // dynamic test with pipe columns
-
         it.each`
-                language |  value              | message
-                ${'en'}  |  ${null}            | ${en.password_null} 
-                ${'en'}  |  ${'P4ssw'}         | ${en.password_size} 
-                ${'en'}  |  ${'alllowercase'}  | ${en.password_pattern} 
-                ${'en'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern} 
-                ${'en'}  |  ${'12344567890'}   | ${en.password_pattern} 
-                ${'en'}  |  ${'lowerandUPPER'} | ${en.password_pattern} 
-                ${'en'}  |  ${'lowerand5667'}  | ${en.password_pattern} 
-                ${'en'}  |  ${'UPPER44494'}    | ${en.password_pattern} 
-                ${'tr'}  |  ${null}            | ${tr.password_null} 
-                ${'tr'}  |  ${'P4ssw'}         | ${tr.password_size} 
-                ${'tr'}  |  ${'alllowercase'}  | ${tr.password_pattern} 
-                ${'tr'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern} 
-                ${'tr'}  |  ${'12344567890'}   | ${tr.password_pattern} 
-                ${'tr'}  |  ${'lowerandUPPER'} | ${tr.password_pattern} 
-                ${'tr'}  |  ${'lowerand5667'}  | ${tr.password_pattern} 
-                ${'tr'}  |  ${'UPPER44494'}    | ${tr.password_pattern} 
-            `('returns password validation error $message when language is set to $language and the value is $value', 
-            async ({ language, message, value })=>{
+                language | message
+                ${'tr'}  | ${tr.unauthorized_password_reset}
+                ${'en'}  | ${en.unauthorized_password_reset}
+            `('returns error body with $message when language is set to $language after trying to update with invalid token',
+            async ({language, message})=>{
+
+            const nowInMillis = new Date().getTime();
+            const response = await putPasswordUpdate({
+                password: 'User1password',
+                passwordResetToken: 'abcd'
+            }, { language });
+            expect(response.body.path).toBe('/api/1.0/user/password');
+            expect(response.body.timestamp).toBeGreaterThan(nowInMillis);
+            expect(response.body.message).toBe(message);
+
+        });
+        it('returns 403 when password update request with invalid password pattern and the reset token is invalid',
+            async ()=>{
+
+            const response = await putPasswordUpdate({
+                password: 'not-valid',
+                passwordResetToken: 'abcd'
+            });
+            expect(response.status).toBe(403);
+
+        });
+        it('returns 400 when trying to update with invalid password and the reset token is valid',
+            async ()=>{
 
             const user = await addUser();
             user.passwordResetToken = 'test-token';
             await user.save();
             const response = await putPasswordUpdate({
-                password: value,
+                password: 'not-valid',
                 passwordResetToken: 'test-token'
-            }, {language: language});
-            expect(response.body.validationErrors.password).toBe(message);
+            });
+            expect(response.status).toBe(400);
 
         });
+        // dynamic test with pipe columns
+            it.each`
+                    language |  value              | message
+                    ${'en'}  |  ${null}            | ${en.password_null}
+                    ${'en'}  |  ${'P4ssw'}         | ${en.password_size}
+                    ${'en'}  |  ${'alllowercase'}  | ${en.password_pattern}
+                    ${'en'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern}
+                    ${'en'}  |  ${'12344567890'}   | ${en.password_pattern}
+                    ${'en'}  |  ${'lowerandUPPER'} | ${en.password_pattern}
+                    ${'en'}  |  ${'lowerand5667'}  | ${en.password_pattern}
+                    ${'en'}  |  ${'UPPER44494'}    | ${en.password_pattern}
+                    ${'tr'}  |  ${null}            | ${tr.password_null}
+                    ${'tr'}  |  ${'P4ssw'}         | ${tr.password_size}
+                    ${'tr'}  |  ${'alllowercase'}  | ${tr.password_pattern}
+                    ${'tr'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern}
+                    ${'tr'}  |  ${'12344567890'}   | ${tr.password_pattern}
+                    ${'tr'}  |  ${'lowerandUPPER'} | ${tr.password_pattern}
+                    ${'tr'}  |  ${'lowerand5667'}  | ${tr.password_pattern}
+                    ${'tr'}  |  ${'UPPER44494'}    | ${tr.password_pattern}
+                `('returns password validation error $message when language is set to $language and the value is $value', 
+                async ({ language, message, value })=>{
 
-    // dynamic test with pipe columns
-    it('returns 200 when valid password is sent with valid reset token', async ()=>{
+                const user = await addUser();
+                user.passwordResetToken = 'test-token';
+                await user.save();
+                const response = await putPasswordUpdate({
+                    password: value,
+                    passwordResetToken: 'test-token'
+                }, {language: language});
+                expect(response.body.validationErrors.password).toBe(message);
 
-        const user = await addUser();
-        user.passwordResetToken = 'test-token';
-        await user.save();
-        const response = await putPasswordUpdate({
-            password: 'N3w-password',
-            passwordResetToken: 'test-token'
+            });
+        // dynamic test with pipe columns
+    // invalid [passwordUpdate]
+    // valid [passwordUpdate]
+        it('returns 200 when valid password is sent with valid reset token', async ()=>{
+
+            const user = await addUser();
+            user.passwordResetToken = 'test-token';
+            await user.save();
+            const response = await putPasswordUpdate({
+                password: 'N3w-password',
+                passwordResetToken: 'test-token'
+            });
+            expect(response.status).toBe(200);
+
         });
-        expect(response.status).toBe(200);
-
-    });
+    // valid [passwordUpdate]
 
 });
