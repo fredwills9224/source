@@ -72,6 +72,15 @@ const postPasswordReset = (email = 'user1@mail.com', options = {})=>{
     return agent.send({email: email});
 
 };
+const putPasswordUpdate = (body = {}, options = {})=>{
+
+    const agent = request(app).put('/api/1.0/user/password')
+    if(options.language){
+        agent.set('Accept-Language', options.language);
+    }
+    return agent.send(body);
+
+};
 describe('Password Reset Request', ()=>{
 
     // in[validUser]
@@ -183,7 +192,7 @@ describe('Password Update', ()=>{
     it('returns 403 when password update request does not have the valid password reset token',
         async ()=>{
 
-        const response = await request(app).put('/api/1.0/user/password').send({
+        const response = await putPasswordUpdate({
             password: 'User1password',
             passwordResetToken: 'abcd'
         });
