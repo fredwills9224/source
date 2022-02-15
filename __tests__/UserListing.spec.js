@@ -178,9 +178,9 @@ describe('Get User', ()=>{
         });
     // test automatically passes because express sends 404 response as a default
     it.each`
-        language | message
-        ${'tr'}  | ${tr.user_not_found}
-        ${'en'}  | ${en.user_not_found}
+            language | message
+            ${'tr'}  | ${tr.user_not_found}
+            ${'en'}  | ${en.user_not_found}
         `('returns $message for unknown user when language is set to $language', 
         async ({language, message})=> {
 

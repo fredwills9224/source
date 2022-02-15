@@ -60,9 +60,9 @@ describe('User Delete', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.unauthorized_user_delete}
-            ${'en'}  | ${en.unauthorized_user_delete}
+                language | message
+                ${'tr'}  | ${tr.unauthorized_user_delete}
+                ${'en'}  | ${en.unauthorized_user_delete}
             `('returns error body with $message for unauthorized request when language is $language',
             async ({ language, message })=>{
 

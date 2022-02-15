@@ -420,11 +420,11 @@ describe('Account activation', ()=>{
 
         });
         it.each`
-            language | tokenStatus  | message
-            ${'tr'}  | ${'wrong'}   | ${tr.account_activation_failure}
-            ${'en'}  | ${'wrong'}   | ${en.account_activation_failure}
-            ${'tr'}  | ${'correct'} | ${tr.account_activation_success}
-            ${'en'}  | ${'correct'} | ${en.account_activation_success}
+                language | tokenStatus  | message
+                ${'tr'}  | ${'wrong'}   | ${tr.account_activation_failure}
+                ${'en'}  | ${'wrong'}   | ${en.account_activation_failure}
+                ${'tr'}  | ${'correct'} | ${tr.account_activation_success}
+                ${'en'}  | ${'correct'} | ${en.account_activation_success}
             `('returns $message when wrong token is $tokenStatus and language is $language', 
             async({language, tokenStatus, message})=>{
 

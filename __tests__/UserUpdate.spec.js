@@ -58,9 +58,9 @@ describe('User Update', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.unauthorized_user_update}
-            ${'en'}  | ${en.unauthorized_user_update}
+                language | message
+                ${'tr'}  | ${tr.unauthorized_user_update}
+                ${'en'}  | ${en.unauthorized_user_update}
             `('returns error body with $message for unauthorized request when language is $language',
             async ({ language, message })=>{
 

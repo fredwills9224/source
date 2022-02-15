@@ -92,9 +92,9 @@ describe('Password Reset Request', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.email_not_inuse}
-            ${'en'}  | ${en.email_not_inuse}
+                language | message
+                ${'tr'}  | ${tr.email_not_inuse}
+                ${'en'}  | ${en.email_not_inuse}
             `('returns error body with $message for unknown email for password reset request when language is $language',
             async ({ language, message })=>{
 
@@ -106,9 +106,9 @@ describe('Password Reset Request', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.email_invalid}
-            ${'en'}  | ${en.email_invalid}
+                language | message
+                ${'tr'}  | ${tr.email_invalid}
+                ${'en'}  | ${en.email_invalid}
             `('returns 400 with validation error response having $message when request does not have valid email and language is $language',
             async ({ language, message })=>{
 
@@ -129,9 +129,9 @@ describe('Password Reset Request', ()=>{
 
         });
         it.each`
-            language  |  message
-            ${'tr'}   | ${tr.password_reset_request_success}
-            ${'en'}   | ${en.password_reset_request_success}
+                language  |  message
+                ${'tr'}   | ${tr.password_reset_request_success}
+                ${'en'}   | ${en.password_reset_request_success}
             `('returns success response body with $message for known email for password reset request when language is set as $language',
             async ({language, message})=>{
 
@@ -170,9 +170,9 @@ describe('Password Reset Request', ()=>{
 
     });
     it.each`
-        language  |  message
-        ${'tr'}   | ${tr.email_failure}
-        ${'en'}   | ${en.email_failure}
+            language  |  message
+            ${'tr'}   | ${tr.email_failure}
+            ${'en'}   | ${en.email_failure}
         `('returns $message when language is set as $language after email failure',
         async ({language, message})=>{
 
@@ -200,9 +200,9 @@ describe('Password Update', ()=>{
 
     });
     it.each`
-        language | message
-        ${'tr'}  | ${tr.unauthorized_password_reset}
-        ${'en'}  | ${en.unauthorized_password_reset}
+            language | message
+            ${'tr'}  | ${tr.unauthorized_password_reset}
+            ${'en'}  | ${en.unauthorized_password_reset}
         `('returns error body with $message when language is set to $language after trying to update with invalid token',
         async ({language, message})=>{
 
@@ -239,41 +239,40 @@ describe('Password Update', ()=>{
         expect(response.status).toBe(400);
 
     });
+    // dynamic test with pipe columns
 
-// dynamic test with pipe columns
-            
-    it.each`
-            language |  value              | message
-            ${'en'}  |  ${null}            | ${en.password_null} 
-            ${'en'}  |  ${'P4ssw'}         | ${en.password_size} 
-            ${'en'}  |  ${'alllowercase'}  | ${en.password_pattern} 
-            ${'en'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern} 
-            ${'en'}  |  ${'12344567890'}   | ${en.password_pattern} 
-            ${'en'}  |  ${'lowerandUPPER'} | ${en.password_pattern} 
-            ${'en'}  |  ${'lowerand5667'}  | ${en.password_pattern} 
-            ${'en'}  |  ${'UPPER44494'}    | ${en.password_pattern} 
-            ${'tr'}  |  ${null}            | ${tr.password_null} 
-            ${'tr'}  |  ${'P4ssw'}         | ${tr.password_size} 
-            ${'tr'}  |  ${'alllowercase'}  | ${tr.password_pattern} 
-            ${'tr'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern} 
-            ${'tr'}  |  ${'12344567890'}   | ${tr.password_pattern} 
-            ${'tr'}  |  ${'lowerandUPPER'} | ${tr.password_pattern} 
-            ${'tr'}  |  ${'lowerand5667'}  | ${tr.password_pattern} 
-            ${'tr'}  |  ${'UPPER44494'}    | ${tr.password_pattern} 
-        `('returns password validation error $message when language is set to $language and the value is $value', 
-        async ({ language, message, value })=>{
+        it.each`
+                language |  value              | message
+                ${'en'}  |  ${null}            | ${en.password_null} 
+                ${'en'}  |  ${'P4ssw'}         | ${en.password_size} 
+                ${'en'}  |  ${'alllowercase'}  | ${en.password_pattern} 
+                ${'en'}  |  ${'ALLUPPERCASE'}  | ${en.password_pattern} 
+                ${'en'}  |  ${'12344567890'}   | ${en.password_pattern} 
+                ${'en'}  |  ${'lowerandUPPER'} | ${en.password_pattern} 
+                ${'en'}  |  ${'lowerand5667'}  | ${en.password_pattern} 
+                ${'en'}  |  ${'UPPER44494'}    | ${en.password_pattern} 
+                ${'tr'}  |  ${null}            | ${tr.password_null} 
+                ${'tr'}  |  ${'P4ssw'}         | ${tr.password_size} 
+                ${'tr'}  |  ${'alllowercase'}  | ${tr.password_pattern} 
+                ${'tr'}  |  ${'ALLUPPERCASE'}  | ${tr.password_pattern} 
+                ${'tr'}  |  ${'12344567890'}   | ${tr.password_pattern} 
+                ${'tr'}  |  ${'lowerandUPPER'} | ${tr.password_pattern} 
+                ${'tr'}  |  ${'lowerand5667'}  | ${tr.password_pattern} 
+                ${'tr'}  |  ${'UPPER44494'}    | ${tr.password_pattern} 
+            `('returns password validation error $message when language is set to $language and the value is $value', 
+            async ({ language, message, value })=>{
 
-        const user = await addUser();
-        user.passwordResetToken = 'test-token';
-        await user.save();
-        const response = await putPasswordUpdate({
-            password: value,
-            passwordResetToken: 'test-token'
-        }, {language: language});
-        expect(response.body.validationErrors.password).toBe(message);
+            const user = await addUser();
+            user.passwordResetToken = 'test-token';
+            await user.save();
+            const response = await putPasswordUpdate({
+                password: value,
+                passwordResetToken: 'test-token'
+            }, {language: language});
+            expect(response.body.validationErrors.password).toBe(message);
 
-    });
+        });
 
-// dynamic test with pipe columns
+    // dynamic test with pipe columns
 
 });

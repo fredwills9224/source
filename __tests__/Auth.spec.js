@@ -98,9 +98,9 @@ describe('Authentication', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.authentication_failure}
-            ${'en'}  | ${en.authentication_failure}
+                language | message
+                ${'tr'}  | ${tr.authentication_failure}
+                ${'en'}  | ${en.authentication_failure}
             `('return $message when authentication fails and language is set as $language', 
             async ({language, message})=>{
 
@@ -147,9 +147,9 @@ describe('Authentication', ()=>{
 
         });
         it.each`
-            language | message
-            ${'tr'}  | ${tr.inactive_authentication_failure}
-            ${'en'}  | ${en.inactive_authentication_failure}
+                language | message
+                ${'tr'}  | ${tr.inactive_authentication_failure}
+                ${'en'}  | ${en.inactive_authentication_failure}
             `('returns $message when authentication fails for inactive account and language is set as $language',
             async ({language, message})=>{
 
