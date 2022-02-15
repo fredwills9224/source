@@ -62,7 +62,11 @@
 
   },
   "jest":{
-    "testRunner":"jest-jasmine2"
+    "testRunner":"jest-jasmine2",
+    "testPathIgnorePatterns":[
+      "<rootDir>/node_modules/",
+      "<rootDir>/config/"
+    ]
   }
 
 }

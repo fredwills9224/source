@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const en = require('../locales/en/translation.json');
 const tr = require('../locales/tr/translation.json');
 const SMTPServer = require('smtp-server').SMTPServer;
+const config = require('config');
 
 let lastMail, server;
 let simulateSmtpFailure = false;
@@ -35,7 +36,7 @@ beforeAll(async ()=>{
         }
 
     });
-    await server.listen(8587, 'localhost');
+    await server.listen(config.mail.port, 'localhost');
     await sequelize.sync();
     //jest.setTimeout(20000);
 
