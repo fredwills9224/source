@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
+const User = require('./User');
 
 // [User].post
 
@@ -141,8 +142,31 @@ const pagination = require('../middleware/pagination');
         }
         
     });
-    router.put('/api/1.0/user/password', ()=>{
-        throw new ForbiddenException('unauthorized_password_reset');
+    router.put('/api/1.0/user/password', 
+        check('password')
+            .notEmpty()
+            .withMessage('password_null')
+            .bail()
+            .isLength({ min: 6 })
+            .withMessage('password_size')
+            .bail()
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+            .withMessage('password_pattern')
+        ,
+        async (req, res, next)=>{
+        
+        const errors = validationResult(req);
+        const user = await User.findOne({
+            where: {
+                passwordResetToken: req.body.passwordResetToken
+            }
+        });
+        if(!errors.isEmpty() && user){
+            // return next(new ValidationException(errors.array()));
+            return res.status(400).send();
+        }
+        next(new ForbiddenException('unauthorized_password_reset'));
+    
     });
 
 // [password] reset request
