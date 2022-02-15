@@ -160,14 +160,21 @@ describe('Password Reset Request', ()=>{
         expect(response.status).toBe(502);
 
     });
+    it.each`
+        language  |  message
+        ${'tr'}   | ${tr.email_failure}
+        ${'en'}   | ${en.email_failure}
+        `('returns $message when language is set as $language after email failure',
+        async ({language, message})=>{
+
+        simulateSmtpFailure = true;
+        const user = await addUser();
+        const response = await postPasswordReset(user.email, {language: language} );
+        expect(response.body.message).toBe(message);
+
+    });
 
 });
-
-
-
-
-
-
-
-
-
+// `may run into a condition where user doesn't respond to email for whatever reason and
+// their account is never activated so a schedule task can be created to remove inactive accounts
+// after a specific amount of time` 
