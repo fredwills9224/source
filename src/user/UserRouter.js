@@ -124,25 +124,28 @@ const pagination = require('../middleware/pagination');
     });
 
 // [User].findByIdAndDelete
+// [password] reset request
 
-router.post('/api/1.0/user/password', check('email').isEmail().withMessage('email_invalid'),
-    async (req, res, next)=>{
-    
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return next(new ValidationException(errors.array()));
-    }
-    try{
-        await UserService.passwordResetRequest(req.body.email);
-        return res.send({ message: req.t('password_reset_request_success') });
-    }catch(err){
-        next(err);
-    }
+    router.post('/api/1.0/user/password', check('email').isEmail().withMessage('email_invalid'),
+        async (req, res, next)=>{
+        
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return next(new ValidationException(errors.array()));
+        }
+        try{
+            await UserService.passwordResetRequest(req.body.email);
+            return res.send({ message: req.t('password_reset_request_success') });
+        }catch(err){
+            next(err);
+        }
+        
+    });
+    router.put('/api/1.0/user/password', ()=>{
+        throw new ForbiddenException('unauthorized_password_reset');
+    });
 
-});
+// [password] reset request
 
-router.put('/api/1.0/user/password', (req, res)=>{
-    res.status(403).send();
-});
 
 module.exports = router;
