@@ -74,7 +74,7 @@ const postPasswordReset = (email = 'user1@mail.com', options = {})=>{
 };
 const putPasswordUpdate = (body = {}, options = {})=>{
 
-    const agent = request(app).put('/api/1.0/user/password')
+    const agent = request(app).put('/api/1.0/user/password');
     if(options.language){
         agent.set('Accept-Language', options.language);
     }
@@ -197,6 +197,23 @@ describe('Password Update', ()=>{
             passwordResetToken: 'abcd'
         });
         expect(response.status).toBe(403);
+
+    });
+    it.each`
+        language | message
+        ${'tr'}  | ${tr.unauthorized_password_reset}
+        ${'en'}  | ${en.unauthorized_password_reset}
+        `('returns error body with $message when language is set to $language after trying to update with invalid token',
+        async ({language, message})=>{
+
+        const nowInMillis = new Date().getTime();
+        const response = await putPasswordUpdate({
+            password: 'User1password',
+            passwordResetToken: 'abcd'
+        }, { language });
+        expect(response.body.path).toBe('/api/1.0/user/password');
+        expect(response.body.timestamp).toBeGreaterThan(nowInMillis);
+        expect(response.body.message).toBe(message);
 
     });
 
