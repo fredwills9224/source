@@ -6,25 +6,28 @@ const Model = Sequelize.Model;
 
 class User extends Model{}
 
-User.init({
+User.init(
+    {
 
-    username:{
-        type: Sequelize.STRING
-    },
-    email:{
-        type: Sequelize.STRING
-    },
-    password:{
-        type: Sequelize.STRING
-    },
-    inactive:{
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
-    },
-    activationToken:{
-        type: Sequelize.STRING
-    }
-
+        username:{
+            type: Sequelize.STRING
+        },
+        email:{
+            type: Sequelize.STRING
+        },
+        password:{
+            type: Sequelize.STRING
+        },
+        inactive:{
+            type: Sequelize.BOOLEAN,
+            defaultValue: true
+        },
+        activationToken:{
+            type: Sequelize.STRING
+        },
+        passwordResetToken:{
+            type: Sequelize.STRING
+        }
     },{
         sequelize,
         modelName: 'user'

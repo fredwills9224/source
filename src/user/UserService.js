@@ -97,14 +97,26 @@ const { randomString } = require('../shared/generator');
 // [updateUser]
 // [deletUser]
 
-const deleteUser = async (id)=>{
-    await User.destroy({ where: { id: id } });
-};
+    const deleteUser = async (id)=>{
+        await User.destroy({ where: { id: id } });
+    };
 
 // [deletUser]
+// [passwordReset]
+    const passwordResetRequest = async (email)=>{
+
+        const user = await findByEmail(email);
+        if(!user){
+            throw new NotFoundException('email_not_inuse');
+        }
+        user.passwordResetToken = randomString(16);
+        await user.save();
+
+    };
+// [passwordReset]
 
 module.exports = { 
     save, findByEmail, activate,
     getUsers, getUser, updateUser,
-    deleteUser
+    deleteUser,passwordResetRequest
 };
