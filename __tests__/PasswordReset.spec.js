@@ -152,6 +152,14 @@ describe('Password Reset Request', ()=>{
         });
 
     // [validUser]
+    it('returns 502 Bad Gateway when sending email fails', async ()=>{
+
+        simulateSmtpFailure = true;
+        const user = await addUser();
+        const response = await postPasswordReset(user.email);
+        expect(response.status).toBe(502);
+
+    });
 
 });
 
