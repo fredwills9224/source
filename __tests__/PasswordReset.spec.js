@@ -274,8 +274,10 @@ describe('Password Update', ()=>{
 
             });
         // dynamic test with pipe columns
+
     // invalid [passwordUpdate]
     // valid [passwordUpdate]
+
         it('returns 200 when valid password is sent with valid reset token', async ()=>{
 
             const user = await addUser();
@@ -288,6 +290,7 @@ describe('Password Update', ()=>{
             expect(response.status).toBe(200);
 
         });
+        
     // valid [passwordUpdate]
 
 });
