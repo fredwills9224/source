@@ -126,6 +126,8 @@ const { randomString } = require('../shared/generator');
         const updatedHashedPassword = await bcrypt.hash(updateRequest.password, 10);
         user.password = updatedHashedPassword;
         user.passwordResetToken = null;
+        user.inactive = false;
+        user.activationToken = null;
         await user.save();
 
     };
