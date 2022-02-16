@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/user/User');
+const Token = require('../src/auth/Token');
 const sequelize = require('../src/config/database');
 const bcrypt = require('bcrypt');
 const en = require('../locales/en/translation.json');
@@ -330,6 +331,24 @@ describe('Password Update', ()=>{
             const userInDB = await User.findOne({ where: {email: 'user1@mail.com'} });
             expect(userInDB.activationToken).toBeFalsy();
             expect(userInDB.inactive).toBe(false);
+
+        });
+        it('clears all tokens of user after valid password reset', async ()=>{
+
+            const user = await addUser();
+            user.passwordResetToken = 'test-token';         
+            await user.save();
+            await Token.create({
+                token: 'token-1',
+                userId: user.id,
+                lastUsedAt: Date.now()
+            });
+            await putPasswordUpdate({
+                password: 'N3w-password',
+                passwordResetToken: 'test-token'
+            });
+            const tokens = await Token.findAll({ where: {userId: user.id} });
+            expect(tokens.length).toBe(0);
 
         });
 
