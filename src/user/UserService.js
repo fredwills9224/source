@@ -89,9 +89,10 @@ const TokenService = require('../auth/TokenService');
 // [getUser]
 // [updateUser]
 
-    const updateUser = async (id, updateBody)=>{
+    const updateUser = async (id, updatedBody)=>{
         const user = await User.findOne({ where: { id: id } });
-        user.username = updateBody.username;
+        user.username = updatedBody.username;
+        user.image = updatedBody.image;
         await user.save();
     };
 
