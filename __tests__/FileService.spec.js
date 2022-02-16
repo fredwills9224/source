@@ -5,7 +5,7 @@ describe('createFolders', ()=>{
 
     it('creates upload folder', ()=>{
 
-        FileService.creatFolders();
+        FileService.createFolders();
         const folderName = 'upload';
         expect(fs.existsSync(folderName)).toBe(true);
 
