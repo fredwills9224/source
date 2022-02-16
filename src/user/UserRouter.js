@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
-const User = require('./User');
 
 // [User].post
 
@@ -145,11 +144,7 @@ const User = require('./User');
 
     const passwordResetTokenValidator = async (req, res, next)=>{
 
-        const user = await User.findOne({
-            where: {
-                passwordResetToken: req.body.passwordResetToken
-            }
-        });
+        const user = await UserService.findByPasswordResetToken(req.body.passwordResetToken); 
         if(!user){
             return next(new ForbiddenException('unauthorized_password_reset'));
         }

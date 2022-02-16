@@ -122,21 +122,22 @@ const { randomString } = require('../shared/generator');
 // [updatePassword]
     const updatePassword = async (updateRequest)=>{
 
-        const user = await User.findOne({ 
-            where: {
-                passwordResetToken: updateRequest.passwordResetToken
-            } 
-        });
+        const user = await findByPasswordResetToken(updateRequest.passwordResetToken);
         const updatedHashedPassword = await bcrypt.hash(updateRequest.password, 10);
         user.password = updatedHashedPassword;
         await user.save();
 
     };
 // [updatePassword]
+// [findByPasswordResetToken]
+    const findByPasswordResetToken = (token)=>{
+        return User.findOne({where: { passwordResetToken: token }});
+    };
+// [findByPasswordResetToken]
 
 module.exports = { 
     save, findByEmail, activate,
     getUsers, getUser, updateUser,
     deleteUser,passwordResetRequest,
-    updatePassword
+    updatePassword, findByPasswordResetToken
 };
