@@ -7,6 +7,7 @@ const sequelize = require('../config/database');
 const InvalidTokenException = require('./InvalidTokenException');
 const NotFoundException = require('../error/NotFoundException');
 const { randomString } = require('../shared/generator');
+const TokenService = require('../auth/TokenService');
 
 // [save]s [user] with [hashedPassword]
     const save = async(body)=>{
@@ -129,6 +130,7 @@ const { randomString } = require('../shared/generator');
         user.inactive = false;
         user.activationToken = null;
         await user.save();
+        await TokenService.clearTokens(user.id);
 
     };
 // [updatePassword]
