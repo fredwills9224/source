@@ -316,6 +316,22 @@ describe('Password Update', ()=>{
             expect(userInDB.passwordResetToken).toBeFalsy();
 
         });
+        it('activates and clears the activation token if the account is inactive after valid password reset', async ()=>{
+
+            const user = await addUser();
+            user.passwordResetToken = 'test-token';
+            user.activationToken = 'activation-token';
+            user.inactive = true;
+            await user.save();
+            await putPasswordUpdate({
+                password: 'N3w-password',
+                passwordResetToken: 'test-token'
+            });
+            const userInDB = await User.findOne({ where: {email: 'user1@mail.com'} });
+            expect(userInDB.activationToken).toBeFalsy();
+            expect(userInDB.inactive).toBe(false);
+
+        });
 
     // valid [passwordUpdate]
 
