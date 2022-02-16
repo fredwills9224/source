@@ -8,6 +8,7 @@ const InvalidTokenException = require('./InvalidTokenException');
 const NotFoundException = require('../error/NotFoundException');
 const { randomString } = require('../shared/generator');
 const TokenService = require('../auth/TokenService');
+const FileService = require('../file/FileService');
 
 // [save]s [user] with [hashedPassword]
     const save = async(body)=>{
@@ -93,7 +94,8 @@ const TokenService = require('../auth/TokenService');
         
         const user = await User.findOne({ where: { id: id } });
         user.username = updatedBody.username;
-        user.image = updatedBody.image;
+        const filename = FileService.saveProfileImage(updatedBody.image);
+        user.image = filename;
         await user.save();
         return{
             id: id,
