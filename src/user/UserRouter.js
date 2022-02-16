@@ -104,8 +104,8 @@ const pagination = require('../middleware/pagination');
         if(!authenticatedUser  || authenticatedUser.id != req.params.id){
             return next(new ForbiddenException('unauthorized_user_update'));
         }
-        await UserService.updateUser(req.params.id, req.body);
-        return res.send();
+        const user = await UserService.updateUser(req.params.id, req.body);
+        return res.send(user);
     
     });
 // [User].findByIdAndUpdate
