@@ -30,6 +30,7 @@ router.post('/api/1.0/auth',
     res.send({
         id: user.id,
         username: user.username,
+        image: user.image,
         token
     });
 
