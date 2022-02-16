@@ -19,8 +19,20 @@ const saveProfileImage = (base64File)=>{
 
     const filename = randomString(32);
     const filePath = path.join(profileFolder, filename);
-    fs.writeFileSync(filePath, parseInt(base64File).toString(), { encoding: 'base64' });
-    return filename;
+    // fs.writeFileSync(filePath, parseInt(base64File).toString(), { encoding: 'base64' });
+    // eslint-disable-next-line no-unused-vars
+    return new Promise((resolve, reject)=>{
+
+        fs.writeFile(filePath, parseInt(base64File).toString(), (error)=>{
+            if(!error){
+                resolve(filename);
+            }else{
+                // reject(error);
+            }
+        });
+
+    });
+    // return filename;
 
 };
 

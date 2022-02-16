@@ -94,8 +94,7 @@ const FileService = require('../file/FileService');
         
         const user = await User.findOne({ where: { id: id } });
         user.username = updatedBody.username;
-        const filename = FileService.saveProfileImage(updatedBody.image);
-        user.image = filename;
+        user.image = await FileService.saveProfileImage(updatedBody.image);
         await user.save();
         return{
             id: id,
