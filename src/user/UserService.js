@@ -119,9 +119,24 @@ const { randomString } = require('../shared/generator');
 
     };
 // [passwordReset]
+// [updatePassword]
+    const updatePassword = async (updateRequest)=>{
+
+        const user = await User.findOne({ 
+            where: {
+                passwordResetToken: updateRequest.passwordResetToken
+            } 
+        });
+        const updatedHashedPassword = await bcrypt.hash(updateRequest.password, 10);
+        user.password = updatedHashedPassword;
+        await user.save();
+
+    };
+// [updatePassword]
 
 module.exports = { 
     save, findByEmail, activate,
     getUsers, getUser, updateUser,
-    deleteUser,passwordResetRequest
+    deleteUser,passwordResetRequest,
+    updatePassword
 };
