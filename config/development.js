@@ -15,6 +15,8 @@ module.exports = {
             user: 'ezra.kautzer69@ethereal.email',
             pass: 'rNQCjCzk39bHRRpNNQ'
         }
-    }
+    },
+    uploadDir: 'uploads-dev',
+    profileDir: 'profile'
 
 };
