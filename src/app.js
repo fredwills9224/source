@@ -6,6 +6,7 @@ const Backend = require('i18next-fs-backend');
 const middlewre = require('i18next-http-middleware');
 const errorHandler = require('./error/ErrorHandler');
 const tokenAuthentication = require('./middleware/tokenAuthentication');
+const fileService = require('./file/FileService');
 
 i18next
     .use(Backend)
@@ -26,6 +27,9 @@ i18next
     })
 ;
 
+// [createFolders]
+    fileService.createFolders();
+// [createFolders]
 // [app]'s server
     const app = express();
 // [app]'s server
