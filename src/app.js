@@ -6,8 +6,12 @@ const Backend = require('i18next-fs-backend');
 const middlewre = require('i18next-http-middleware');
 const errorHandler = require('./error/ErrorHandler');
 const tokenAuthentication = require('./middleware/tokenAuthentication');
-const fileService = require('./file/FileService');
+const FileService = require('./file/FileService');
+const config = require('config');
+const path = require('path');
 
+const { uploadDir, profileDir } = config;
+const profileFolder = path.join('.', uploadDir, profileDir);
 i18next
     .use(Backend)
     .use(middlewre.LanguageDetector)
@@ -28,7 +32,7 @@ i18next
 ;
 
 // [createFolders]
-    fileService.createFolders();
+    FileService.createFolders();
 // [createFolders]
 // [app]'s server
     const app = express();
@@ -39,6 +43,9 @@ i18next
 // json body parser
     app.use(express.json());
 // json body parser
+// serving static files
+    app.use('/images', express.static(profileFolder));
+// serving static files
 // [tokenAuthentication]
     app.use(tokenAuthentication);
 // [tokenAuthentication]
