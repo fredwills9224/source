@@ -107,6 +107,9 @@ const pagination = require('../middleware/pagination');
         ,
         check('image').custom(( imageAsBase64String )=>{
 
+            if(!imageAsBase64String){
+                return true;
+            }
             const buffer = Buffer.from(imageAsBase64String, 'base64');
             if(buffer.length > 2 * 1024 * 1024){
                 throw new Error();
