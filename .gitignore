@@ -2,3 +2,5 @@ node_modules
 database.sqlite
 test.sqlite
 coverage
+uploads-dev
+uploads-test
