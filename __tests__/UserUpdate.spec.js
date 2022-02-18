@@ -397,5 +397,45 @@ describe('User Update', ()=>{
         expect(response.status).toBe(400);
 
     });
+    it('keeps the old image after user only updates username', async()=>{
+
+        const fileInBase64 = readFileAsBase64();
+        const savedUser = await addUser();
+        const validUpdate = { username: 'user1-updated', image: fileInBase64 };
+        const response = await putUser(
+            
+            savedUser.id,
+            validUpdate,
+            { 
+                auth: 
+                {
+                    email: savedUser.email,
+                    password: 'User1password'
+                } 
+            }
+        
+        );
+        const firstImage = response.body.image;
+        // user update w/o an image
+            await putUser(
+
+                savedUser.id,
+                {username: 'user1-updated2'},
+                { 
+                    auth: 
+                    {
+                        email: savedUser.email,
+                        password: 'User1password'
+                    } 
+                }
+            
+            );
+        // user update w/o an image
+        const profileImagePath = path.join(profileDirectory, firstImage);
+        expect(fs.existsSync(profileImagePath)).toBe(true);
+        const userInDb = await User.findOne({ where: {id: savedUser.id} });
+        expect(userInDb.image).toBe(firstImage);
+
+    });
 
 });
