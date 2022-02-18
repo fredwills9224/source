@@ -375,5 +375,27 @@ describe('User Update', ()=>{
         expect(response.status).toBe(200);
 
     });
+    it('returns 400 when image size exceeds 2mb', async()=>{
+
+        const fileWithSizeExceeding2MB = 'a'.repeat(1024 * 1024 * 2) + 'a';
+        const base64 = Buffer.from(fileWithSizeExceeding2MB).toString('base64');
+        const savedUser = await addUser();
+        const invalidUpdate = { username: 'updated-user', image: base64 };
+        const response = await putUser(
+
+            savedUser.id,
+            invalidUpdate,
+            {
+                auth:
+                {
+                    email: savedUser.email,
+                    password: 'User1password'
+                }
+            }
+
+        );
+        expect(response.status).toBe(400);
+
+    });
 
 });
