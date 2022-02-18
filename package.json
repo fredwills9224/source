@@ -8,6 +8,7 @@
 
     "start": "cross-env NODE_ENV=development nodemon index",
     "test": "cross-env NODE_ENV=test jest --watch --colors --verbose --detectOpenHandles",
+    "posttest": "cross-env NODE_ENV=test node test-cleanup",
     "lint": "eslint ."
 
   },
