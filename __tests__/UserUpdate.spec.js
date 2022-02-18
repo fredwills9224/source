@@ -284,5 +284,43 @@ describe('User Update', ()=>{
         expect(fs.existsSync(profileImagePath)).toBe(true);
 
     });
+    it('removes the old image after user uploads new one', async ()=>{
+
+        const fileInBase64 = readFileAsBase64();
+        const savedUser = await addUser();
+        const validUpdate = { username: 'user1-updated', image: fileInBase64 };
+        const response = await putUser(
+            
+            savedUser.id,
+            validUpdate,
+            { 
+                auth: 
+                {
+                    email: savedUser.email,
+                    password: 'User1password'
+                } 
+            }
+        
+        );
+        const firstImage = response.body.image;
+        // uploading same file but backend can't tell the difference so it saves as different file
+            await putUser(
+
+                savedUser.id,
+                validUpdate,
+                { 
+                    auth: 
+                    {
+                        email: savedUser.email,
+                        password: 'User1password'
+                    } 
+                }
+            
+            );
+        // uploading same file but backend can't tell the difference so it saves as different file
+        const profileImagePath = path.join(profileDirectory, firstImage);
+        expect(fs.existsSync(profileImagePath)).toBe(false);
+
+    });
 
 });
