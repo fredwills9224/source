@@ -42,7 +42,7 @@ i18next
     app.use(middlewre.handle(i18next));
 // internationalization
 // json body parser
-    app.use(express.json());
+    app.use(express.json({limit: '3mb'}));
 // json body parser
 // serving static files sending cache's [maxAge] in ms to [express]. [exress] converts to s in [headers]
     app.use('/images', express.static(profileFolder, {maxAge: ONE_YEAR_IN_MILLIS}));
