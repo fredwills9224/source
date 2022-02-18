@@ -19,6 +19,7 @@
   "unauthorized_user_delete": "Kullaniciyi silme yetkiniz bulunmamaktadir",
   "email_not_inuse": "E-posta bulunamadi",
   "password_reset_request_success": "Sifrenizi yenilemek icin e-postanizi kontrol edin",
-  "unauthorized_password_reset": "Sifrenizi yenileme yetkiniz bulunmuyor. Lutfen sifre yenileme adimlarini tekrarlayiniz."
+  "unauthorized_password_reset": "Sifrenizi yenileme yetkiniz bulunmuyor. Lutfen sifre yenileme adimlarini tekrarlayiniz.",
+  "profile_image_size": "Kullandiginiz resim 2MB dan buyuk olamaz"
 
 }

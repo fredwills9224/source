@@ -437,5 +437,33 @@ describe('User Update', ()=>{
         expect(userInDb.image).toBe(firstImage);
 
     });
+    it.each`
+            language | message
+            ${'tr'}  | ${tr.profile_image_size}
+            ${'en'}  | ${en.profile_image_size}
+        `('returns $message when file size exceeds 2mb when language is $language', 
+        async ({language, message})=>{
+
+        const fileWithSizeExceeding2MB = 'a'.repeat(1024 * 1024 * 2) + 'a';
+        const base64 = Buffer.from(fileWithSizeExceeding2MB).toString('base64');
+        const savedUser = await addUser();
+        const invalidUpdate = { username: 'updated-user', image: base64 };
+        const response = await putUser(
+
+            savedUser.id,
+            invalidUpdate,
+            {
+                auth:
+                {
+                    email: savedUser.email,
+                    password: 'User1password'
+                },
+                language
+            }
+
+        );
+        expect(response.body.validationErrors.image).toBe(message);
+
+    });
 
 });
