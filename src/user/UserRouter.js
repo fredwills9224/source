@@ -118,7 +118,7 @@ const FileType = require('file-type');
                 }
                 const type = await FileType.fromBuffer(buffer);
                 if(!type || (type.mime !== 'image/png' && type.mime !== 'image/jpeg')){
-                    throw new Error();
+                    throw new Error('unsupported_image_file');
                 }
                 return true;
                 
