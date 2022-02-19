@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const ForbiddenException = require('../error/ForbiddenException');
 const pagination = require('../middleware/pagination');
+const FileType = require('file-type');
 
 // [User].post
 
@@ -105,18 +106,25 @@ const pagination = require('../middleware/pagination');
             .isLength({ min: 4, max: 32 })
             .withMessage('username_size')
         ,
-        check('image').custom(( imageAsBase64String )=>{
+        check('image')
+            .custom(async ( imageAsBase64String )=>{
 
-            if(!imageAsBase64String){
+                if(!imageAsBase64String){
+                    return true;
+                }
+                const buffer = Buffer.from(imageAsBase64String, 'base64');
+                if(buffer.length > 2 * 1024 * 1024){
+                    throw new Error('profile_image_size');
+                }
+                const type = await FileType.fromBuffer(buffer);
+                console.log(type);
+                if(type.mime !== 'image/png'){
+                    throw new Error();
+                }
                 return true;
-            }
-            const buffer = Buffer.from(imageAsBase64String, 'base64');
-            if(buffer.length > 2 * 1024 * 1024){
-                throw new Error('profile_image_size');
-            }
-            return true;
-
-        }),
+                
+            })
+        ,
         async (req, res, next)=>{
         
         const authenticatedUser = req.authenticatedUser;
