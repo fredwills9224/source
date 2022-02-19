@@ -1,6 +1,8 @@
 node_modules
 database.sqlite
 test.sqlite
+staging.sqlite
 coverage
 uploads-dev
 uploads-test
+uploads-staging
