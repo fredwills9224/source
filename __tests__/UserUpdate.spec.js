@@ -52,9 +52,9 @@ const putUser = async (id = 5, body = null, options = {})=>{
     return agent.send(body);
 
 };
-const readFileAsBase64 = ()=>{
+const readFileAsBase64 = (file = 'test-png.png')=>{
 
-    const filePath = path.join('.', '__tests__', 'resources', 'test-png.png');
+    const filePath = path.join('.', '__tests__', 'resources', file);
     return fs.readFileSync(filePath, { encoding: 'base64' });
 
 };
@@ -463,6 +463,30 @@ describe('User Update', ()=>{
 
         );
         expect(response.body.validationErrors.image).toBe(message);
+
+    });
+    it.each`
+            file               | status
+            ${'test-gif.gif'}  | ${400}
+        `('returns $status when uploading $file as image', async ({ file, status })=>{
+
+        const fileInBase64 = readFileAsBase64(file);
+        const savedUser = await addUser();
+        const updateBody = { username: 'user1-updated', image: fileInBase64 };
+        const response = await putUser(
+            
+            savedUser.id,
+            updateBody,
+            { 
+                auth: 
+                {
+                    email: savedUser.email,
+                    password: 'User1password'
+                } 
+            }
+        
+        );
+        expect(response.status).toBe(status);
 
     });
 
