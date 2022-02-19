@@ -471,6 +471,8 @@ describe('User Update', ()=>{
     it.each`
             file               | status
             ${'test-gif.gif'}  | ${400}
+            ${'test-pdf.pdf'}  | ${400}
+            ${'test-txt.txt'}  | ${400}
         `('returns $status when uploading $file as image', async ({ file, status })=>{
 
         const fileInBase64 = readFileAsBase64(file);
