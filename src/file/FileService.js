@@ -20,7 +20,7 @@ const saveProfileImage = async (base64File)=>{
 
     const filename = randomString(32);
     const filePath = path.join(profileFolder, filename);
-    await fs.promises.writeFile(filePath, parseInt(base64File).toString(), 'base64');
+    await fs.promises.writeFile(filePath, base64File, 'base64');
     return filename;
 
 };
