@@ -97,6 +97,22 @@ const FileType = require('file-type');
 
     });
 // [User].findById
+const isLessThan2MB = (buffer)=>{
+    return buffer.length < 2 * 1024 * 1024;
+};
+const isSupportedFileType = async(buffer)=>{
+    
+    const type = await FileType.fromBuffer(buffer);
+    // if(!type){
+    //     return false;
+    // }
+    // if(type.mime === 'image/png' || type.mime === 'image/jpeg'){
+    //     return true;
+    // }
+    // return false;
+    return !type ? false : type.mime === 'image/png' || type.mime === 'image/jpeg';
+
+};
 // [User].findByIdAndUpdate
     router.put('/api/1.0/users/:id', 
         check('username')
@@ -113,11 +129,11 @@ const FileType = require('file-type');
                     return true;
                 }
                 const buffer = Buffer.from(imageAsBase64String, 'base64');
-                if(buffer.length > 2 * 1024 * 1024){
+                if(!isLessThan2MB(buffer)){
                     throw new Error('profile_image_size');
                 }
-                const type = await FileType.fromBuffer(buffer);
-                if(!type || (type.mime !== 'image/png' && type.mime !== 'image/jpeg')){
+                const supportedType = await isSupportedFileType(buffer);
+                if(!supportedType){
                     throw new Error('unsupported_image_file');
                 }
                 return true;
