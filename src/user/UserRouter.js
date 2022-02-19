@@ -117,7 +117,7 @@ const FileType = require('file-type');
                     throw new Error('profile_image_size');
                 }
                 const type = await FileType.fromBuffer(buffer);
-                if(type.mime !== 'image/png'){
+                if(!type || type.mime !== 'image/png'){
                     throw new Error();
                 }
                 return true;
