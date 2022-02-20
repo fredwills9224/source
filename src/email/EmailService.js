@@ -6,7 +6,7 @@ const sendAccountActivation = async (email, token)=>{
     
     const info = await transporter.sendMail({
         
-        from: 'willsf9224@gmail.com',
+        from: "willsf9224@gmail.com",
         to: email,
         subject: 'Account Activation',
         html: `
@@ -26,7 +26,7 @@ const sendPasswordReset = async (email, token)=>{
     
     const info = await transporter.sendMail({
         
-        from: 'willsf9224@gmail.com',
+        from: "willsf9224@gmail.com",
         to: email,
         subject: 'Password Reset',
         html: `

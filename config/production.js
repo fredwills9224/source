@@ -9,12 +9,12 @@ module.exports = {
         logging: false
     },
     mail:{
-        service: 'Gmail',
+        service: "Gmail",
         // host: 'smtp.ethereal.email',
         // port: 587,
         auth: {
-            user: 'willsf9224@gmail.com',
-            pass: 'Unity2014!!@@'
+            user: "willsf9224@gmail.com",
+            pass: "Unity2014!!@@"
         }
     },
     uploadDir: 'uploads-production',
