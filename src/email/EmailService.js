@@ -6,7 +6,7 @@ const sendAccountActivation = async (email, token)=>{
     
     const info = await transporter.sendMail({
         
-        from: 'My App <info@my-app.com>',
+        from: 'willsf9224@gmail.com',
         to: email,
         subject: 'Account Activation',
         html: `
@@ -19,16 +19,14 @@ const sendAccountActivation = async (email, token)=>{
         `  
     
     });
-    if(process.env.NODE_ENV === 'development'){
-        logger.info('url: ' +nodemailer.getTestMessageUrl(info));
-    }
+    logger.info('url: ' +nodemailer.getTestMessageUrl(info));
 
 };
 const sendPasswordReset = async (email, token)=>{
     
     const info = await transporter.sendMail({
         
-        from: 'My App <info@my-app.com>',
+        from: 'willsf9224@gmail.com',
         to: email,
         subject: 'Password Reset',
         html: `
@@ -41,9 +39,7 @@ const sendPasswordReset = async (email, token)=>{
         `  
     
     });
-    if(process.env.NODE_ENV === 'development'){
-        logger.info('url: ' +nodemailer.getTestMessageUrl(info));
-    }
+    logger.info('url: ' +nodemailer.getTestMessageUrl(info));
 
 };
 
