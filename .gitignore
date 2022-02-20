@@ -8,3 +8,4 @@ uploads-dev
 uploads-test
 uploads-staging
 uploads-production
+.sequelizerc
