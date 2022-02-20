@@ -2,7 +2,9 @@ node_modules
 database.sqlite
 test.sqlite
 staging.sqlite
+prod-db.sqlite
 coverage
 uploads-dev
 uploads-test
 uploads-staging
+uploads-production

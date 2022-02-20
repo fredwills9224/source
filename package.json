@@ -4,15 +4,13 @@
   "description": "tdd with express",
   "main": "app.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon index",
-    "test": "cross-env NODE_ENV=test jest --watch --colors",
-    "posttest": "cross-env NODE_ENV=test npm run clean-up",
+    "start:dev": "cross-env NODE_ENV=development npm run migrate && cross-env NODE_ENV=development nodemon index",
+    "start": "cross-env NODE_ENV=production npm run migrate && cross-env NODE_ENV=production node index",
+    "test": "cross-env NODE_ENV=test jest --watch --colors && cross-env NODE_ENV=test npm run clean-up",
+    "test:staging": "cross-env NODE_ENV=staging npm run migrate && cross-env NODE_ENV=staging jest --colors --runInBand --detectOpenHandles --forceExit -- -f . && cross-env NODE_ENV=staging npm run clean-up",
     "clean-up": "node test-cleanup",
     "lint": "eslint .",
-    "test:staging": "cross-env NODE_ENV=staging jest --colors --runInBand --detectOpenHandles --forceExit -- -f . ",
-    "migrate:test": "cross-env NODE_ENV=staging sequelize-cli db:migrate",
-    "pretest:staging": "npm run migrate:test",
-    "posttest:staging": "cross-env NODE_ENV=staging npm run clean-up"
+    "migrate": "sequelize-cli db:migrate"
   },
   "author": "Fred Wills",
   "license": "ISC",
