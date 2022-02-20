@@ -9,7 +9,7 @@ module.exports = {
         logging: false
     },
     mail:{
-        service: 'gmail',
+        service: 'Gmail',
         // host: 'smtp.ethereal.email',
         // port: 587,
         auth: {
