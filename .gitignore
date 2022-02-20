@@ -9,3 +9,4 @@ uploads-test
 uploads-staging
 uploads-production
 .sequelizerc
+app.log
