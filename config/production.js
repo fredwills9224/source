@@ -1,5 +1,4 @@
 module.exports = {
-
     database:{
         database: 'hoaxify',
         username: 'my-db-user',
@@ -18,5 +17,4 @@ module.exports = {
     },
     uploadDir: 'uploads-production',
     profileDir: 'profile'
-
 };
