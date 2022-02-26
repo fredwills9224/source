@@ -26,6 +26,7 @@ const activeUser = {
     password: 'User1password',
     inactive: false
 };
+const credentials = { email: 'user1@mail.com', password: 'User1password' };
 const addUser = async (user = {...activeUser})=>{
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -136,10 +137,7 @@ describe('User Update', ()=>{
                 userToBeUpdated.id,
                 null,
                 { 
-                    auth: {
-                        email: 'user5@mail.com',
-                        password: 'User5password'
-                    }
+                    auth: credentials
                 }
                  
             );
@@ -155,10 +153,7 @@ describe('User Update', ()=>{
                 inactiveUser.id,
                 null,
                 { 
-                    auth: {
-                        email: 'user5@mail.com',
-                        password: 'User5password'
-                    }
+                    auth: credentials
                 }
                  
             );

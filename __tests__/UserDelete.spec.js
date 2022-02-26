@@ -22,6 +22,7 @@ const activeUser = {
     password: 'User1password',
     inactive: false
 };
+const credentials = { email: 'user1@mail.com', password: 'User1password' };
 const addUser = async (user = {...activeUser})=>{
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -86,10 +87,7 @@ describe('User Delete', ()=>{
                 email: 'user2@mail.com'
             });
             const token = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
+                auth: credentials
             });
             const response = await deleteUser(userToBeDeleted.id, {token: token});
             expect(response.status).toBe(403);
@@ -110,10 +108,7 @@ describe('User Delete', ()=>{
 
             const savedUser = await addUser();
             const token = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
+                auth: credentials
             });
             const response = await deleteUser(savedUser.id, {token: token});
             expect(response.status).toBe(200);
@@ -123,12 +118,7 @@ describe('User Delete', ()=>{
             async ()=>{
 
             const savedUser = await addUser();
-            const token = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
-            });
+            const token = await auth({ auth: credentials });
             await deleteUser(savedUser.id, {token: token});
             const inDBUser = await User.findOne({ where: { id: savedUser.id } });
             expect(inDBUser).toBeNull();
@@ -138,12 +128,7 @@ describe('User Delete', ()=>{
             async ()=>{
 
             const savedUser = await addUser();
-            const token = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
-            });
+            const token = await auth({ auth: credentials });
             await deleteUser(savedUser.id, {token: token});
             const tokenInDB = await Token.findOne({where: { token: token }});
             expect(tokenInDB).toBeNull();
@@ -153,18 +138,8 @@ describe('User Delete', ()=>{
             async ()=>{
 
             const savedUser = await addUser();
-            const token1 = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
-            });
-            const token2 = await auth({
-                auth:{
-                    email: 'user1@mail.com',
-                    password: 'User1password'
-                }
-            });
+            const token1 = await auth({ auth: credentials });
+            const token2 = await auth({ auth: credentials });
             await deleteUser(savedUser.id, {token: token1});
             const tokenInDB = await Token.findOne({where: { token: token2 }});
             expect(tokenInDB).toBeNull();

@@ -9,6 +9,7 @@ const tokenAuthentication = require('./middleware/tokenAuthentication');
 const FileService = require('./file/FileService');
 const config = require('config');
 const path = require('path');
+const HoaxRouter = require('./hoax/HoaxRouter');
 
 const { uploadDir, profileDir } = config;
 const profileFolder = path.join('.', uploadDir, profileDir);
@@ -56,6 +57,9 @@ i18next
 // [AuthenticationRouter]
     app.use(AuthenticationRouter);
 // [AuthenticationRouter]
+// [HoaxRouter]
+    app.use(HoaxRouter);
+// [HoaxRouter]
 // [errorHandler] as middleware
     app.use(errorHandler);
 // [errorHandler] as middleware

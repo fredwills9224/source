@@ -21,6 +21,7 @@ const activeUser = {
     password: 'User1password',
     inactive: false
 };
+const credentials = { email: 'user1@mail.com', password: 'User1password' };
 const addUser = async (user = {...activeUser})=>{
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -54,20 +55,14 @@ describe('Authentication', ()=>{
         it('returns 200 when credentials are correct', async ()=>{
 
             await addUser();
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             expect(response.status).toBe(200);
 
         });
         it('returns only user id, username, image, and token when login success', async ()=>{
 
             const user = await addUser();
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             expect(response.body.id).toBe(user.id);
             expect(response.body.username).toBe(user.username);
             expect(Object.keys(response.body)).toEqual(['id', 'username', 'image', 'token']);
@@ -79,20 +74,14 @@ describe('Authentication', ()=>{
 
         it('returns 401 when user does not exist', async ()=>{
 
-            const response = await postAuthentication({ 
-                email: 'user1@mail.com',
-                password: 'User1password' 
-            });
+            const response = await postAuthentication(credentials);
             expect(response.status).toBe(401);
 
         });
         it('returns proper error body when authentication fails', async ()=>{
 
             const nowInMillis = new Date().getTime();
-            const response = await postAuthentication({ 
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             const error = response.body;
             expect(error.path).toBe('/api/1.0/auth');
             expect(error.timestamp).toBeGreaterThan(nowInMillis);
@@ -106,10 +95,7 @@ describe('Authentication', ()=>{
             `('return $message when authentication fails and language is set as $language', 
             async ({language, message})=>{
 
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            }, {language});
+            const response = await postAuthentication( credentials , {language});
             expect(response.body.message).toBe(message);
 
         });
@@ -126,10 +112,7 @@ describe('Authentication', ()=>{
         it('returns 403 when logging in with an inactive account', async()=>{
 
             await addUser({...activeUser, inactive: true});
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             expect(response.status).toBe(403);
 
         });
@@ -138,10 +121,7 @@ describe('Authentication', ()=>{
 
             await addUser({ ...activeUser, inactive: true });
             const nowInMillis = new Date().getTime();
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             const error = response.body;
             expect(error.path).toBe('/api/1.0/auth');
             expect(error.timestamp).toBeGreaterThan(nowInMillis);
@@ -156,10 +136,7 @@ describe('Authentication', ()=>{
             async ({language, message})=>{
 
             await addUser({ ...activeUser, inactive: true });
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            }, {language});
+            const response = await postAuthentication( credentials, {language});
             expect(response.body.message).toBe(message);
 
         });
@@ -184,10 +161,7 @@ describe('Authentication', ()=>{
         it('returns token in response body when credentials are correct', async()=>{
 
             await addUser();
-            const response = await postAuthentication({
-                email: 'user1@mail.com',
-                password: 'User1password'
-            });
+            const response = await postAuthentication(credentials);
             expect(response.body.token).not.toBeUndefined();
 
         });
@@ -205,10 +179,7 @@ describe('Logout', ()=>{
     it('removes the token from database', async()=>{
 
         await addUser();
-        const response = await postAuthentication({ 
-            email: 'user1@mail.com', 
-            password: 'User1password' 
-        });
+        const response = await postAuthentication(credentials);
         const token = response.body.token;
         await postLogout({token: token});
         const storedToken = await Token.findOne({ where: {token: token} });

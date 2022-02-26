@@ -21,6 +21,7 @@
   "password_reset_request_success": "Sifrenizi yenilemek icin e-postanizi kontrol edin",
   "unauthorized_password_reset": "Sifrenizi yenileme yetkiniz bulunmuyor. Lutfen sifre yenileme adimlarini tekrarlayiniz.",
   "profile_image_size": "Kullandiginiz resim 2MB dan buyuk olamaz",
-  "unsupported_image_file": "Sadece JPEG ya da PNG dosyalarini kullanabilirsiniz"
+  "unsupported_image_file": "Sadece JPEG ya da PNG dosyalarini kullanabilirsiniz",
+  "unauthorized_hoax_submit": "Efsane gondermeye yetkiniz bulunmamaktadir"
 
 }
