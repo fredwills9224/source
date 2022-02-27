@@ -23,6 +23,7 @@
   "profile_image_size": "Kullandiginiz resim 2MB dan buyuk olamaz",
   "unsupported_image_file": "Sadece JPEG ya da PNG dosyalarini kullanabilirsiniz",
   "unauthorized_hoax_submit": "Efsane gondermeye yetkiniz bulunmamaktadir",
-  "hoax_submit_success": "Efsaneniz kaydedildi"
+  "hoax_submit_success": "Efsaneniz kaydedildi",
+  "hoax_content_size": "Gonderiniz en az 10 en fazla 5000 karakter olmali"
 
 }
