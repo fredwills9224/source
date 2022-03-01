@@ -10,6 +10,7 @@ const FileService = require('./file/FileService');
 const config = require('config');
 const path = require('path');
 const HoaxRouter = require('./hoax/HoaxRouter');
+const FileRouter = require('./file/FileRouter');
 
 const { uploadDir, profileDir } = config;
 const profileFolder = path.join('.', uploadDir, profileDir);
@@ -60,6 +61,9 @@ i18next
 // [HoaxRouter]
     app.use(HoaxRouter);
 // [HoaxRouter]
+// [FileRouter]
+    app.use(FileRouter);
+// [FileRouter]
 // [errorHandler] as middleware
     app.use(errorHandler);
 // [errorHandler] as middleware
