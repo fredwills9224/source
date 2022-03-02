@@ -7,12 +7,17 @@ class FileAttachment extends Model {}
 FileAttachment.init(
     
     {
+        
         filename: {
             type: Sequelize.STRING
         },
         uploadDate:{
             type: Sequelize.DATE
+        },
+        fileType: {
+            type: Sequelize.STRING
         }
+
     },
     {
         sequelize,
