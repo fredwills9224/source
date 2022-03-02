@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
+const FileAttachment = require('../file/FileAttachment');
 
 const Model = Sequelize.Model;
 
@@ -21,5 +22,7 @@ Hoax.init(
     }
 
 );
+
+Hoax.hasOne(FileAttachment, { foreignKey: 'hoaxId' });
 
 module.exports = Hoax;

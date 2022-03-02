@@ -13,8 +13,8 @@ router.post('/api/1.0/hoaxes/attachments', (req, res, next)=>{
         if(err){
             return next(new FileSizeException());
         }
-        await FileService.saveAttachment(req.file);
-        res.send();
+        const attachment = await FileService.saveAttachment(req.file);
+        res.send(attachment);
 
     });
 
