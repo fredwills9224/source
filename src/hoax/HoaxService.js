@@ -2,6 +2,7 @@ const Hoax = require('./Hoax');
 const User = require('../user/User');
 const NotFoundException = require('../error/NotFoundException');
 const FileService = require('../file/FileService');
+const FileAttachment = require('../file/FileAttachment');
 
 const save = async (body, user)=>{
 
@@ -33,12 +34,21 @@ const save = async (body, user)=>{
         const hoaxesWithCount = await Hoax.findAndCountAll({
             
             attributes: ['id', 'content', 'timestamp'],
-            include: {
-                model: User,
-                as: 'user',
-                attributes: ['id', 'username', 'email', 'image'],
-                where
-            },
+            include: [
+
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: ['id', 'username', 'email', 'image'],
+                    where
+                },
+                {
+                    model: FileAttachment,
+                    as: 'fileAttachment',
+                    attributes: ['filename', 'fileType']
+                }
+
+            ],
             order:[
                 ['id', 'DESC']
             ],
@@ -46,8 +56,38 @@ const save = async (body, user)=>{
             offset: page*size
 
         });
+
+        // const newContent = hoaxesWithCount.rows.map((hoaxSequelize)=>{
+
+        //     const hoaxAsJson = hoaxSequelize.get({ plain: true });
+        //     if(hoaxAsJson.fileAttachment === null){
+        //         delete hoaxAsJson.fileAttachment;
+        //     }
+        //     return hoaxAsJson;
+
+        // });
+        // const newContent = [];
+        // for(let hoaxSequelize of hoaxesWithCount.rows){
+            
+        //     const hoaxAsJson = hoaxSequelize.get({plain: true});
+        //     if(hoaxAsJson.fileAttachment === null){
+        //         delete hoaxAsJson.fileAttachment;
+        //     }
+        //     newContent.push(hoaxAsJson);
+
+        // }
+
         return {
-            content: hoaxesWithCount.rows,
+            // content: newContent,
+            content: hoaxesWithCount.rows.map((hoaxSequelize)=>{
+
+                const hoaxAsJson = hoaxSequelize.get({ plain: true });
+                if(hoaxAsJson.fileAttachment === null){
+                    delete hoaxAsJson.fileAttachment;
+                }
+                return hoaxAsJson;
+    
+            }),
             page,
             size,
             totalPages: Math.ceil( hoaxesWithCount.count/size )
