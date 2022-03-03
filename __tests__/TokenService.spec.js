@@ -1,12 +1,6 @@
-const sequelize = require('../src/config/database');
 const Token = require('../src/auth/Token');
 const TokenService = require('../src/auth/TokenService');
 
-beforeAll(async ()=>{
-    if(process.env.NODE_ENV === 'test'){
-        await sequelize.sync();
-    }
-});
 beforeEach(async ()=>{
     // only dealing with [Token] table w/o foriegn keys so [{truncate: true}] Ok
         await Token.destroy({ truncate: true });
