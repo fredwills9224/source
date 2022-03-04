@@ -5,6 +5,7 @@ const HoaxService = require('./HoaxService');
 const { check, validationResult } = require('express-validator');
 const ValidationException = require('../error/ValidationException');
 const pagination = require('../middleware/pagination');
+const ForbiddenException = require('../error/ForbiddenException');
 
 router.post('/api/1.0/hoaxes', 
     check('content')
@@ -36,6 +37,11 @@ router.get(['/api/1.0/hoaxes', '/api/1.0/users/:userId/hoaxes'], pagination,
         next(err);
     }
 
+});
+
+// eslint-disable-next-line no-unused-vars
+router.delete('/api/1.0/hoaxes/:hoaxId', (req, res)=>{
+    throw new ForbiddenException('unauthorized_hoax_delete');
 });
 
 module.exports = router;
