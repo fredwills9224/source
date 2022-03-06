@@ -100,9 +100,21 @@ const save = async (body, user)=>{
 // [deleteHoax]
     const deleteHoax = async (hoaxId, userId)=>{
     
-        const hoaxToBeDeleted =  await Hoax.findOne({ where: { id: hoaxId, userId } });
+        const hoaxToBeDeleted =  await Hoax.findOne({ 
+            
+            where: { 
+                id: hoaxId,
+                userId
+            },
+            include:{ model: FileAttachment }
+
+        });
         if(!hoaxToBeDeleted){
             throw new ForbiddenException('unauthorized_hoax_delete');
+        }
+        const hoaxJSON = hoaxToBeDeleted.get({ plain: true });
+        if(hoaxJSON.fileAttachment !== null){
+            await FileService.deleteAttachment(hoaxJSON.fileAttachment.filename);
         }
         await hoaxToBeDeleted.destroy();
 

@@ -115,6 +115,17 @@ const removeUnusedAttachments = async ()=>{
 
 };
 
+const deleteAttachment = async (filename)=>{
+
+    const filePath = path.join(attachmentFolder, filename);
+    try{
+        await fs.promises.access(filePath);
+        await fs.promises.unlink(filePath);
+    // eslint-disable-next-line no-empty
+    }catch(err){}
+
+};
+
 module.exports = { 
     createFolders,
     saveProfileImage,
@@ -123,5 +134,6 @@ module.exports = {
     isSupportedFileType,
     saveAttachment,
     associateFileToHoax,
-    removeUnusedAttachments 
+    removeUnusedAttachments,
+    deleteAttachment 
 };
