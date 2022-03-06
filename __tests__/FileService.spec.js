@@ -88,7 +88,7 @@ describe('Scheduled unused file clean up', ()=>{
     it('keeps the files younger than 24 hours and their database entry even when not associated with hoax',
         async (done)=>{
 
-        // jest.useFakeTimers();
+        jest.useFakeTimers();
         fs.copyFileSync(testFile, targetPath);
         const uploadDate = new Date(Date.now() - 23 * 60 * 60 * 1000);
         const attachment = await FileAttachment.create({
@@ -96,7 +96,7 @@ describe('Scheduled unused file clean up', ()=>{
             uploadDate: uploadDate
         });
         await FileService.removeUnusedAttachments();
-        jest.advanceTimersByTime(24 * 60 * 60 * 1000 + 5000);
+        jest.advanceTimersByTime(24 * 60 * 59 * 1000 + 5000);
         jest.useRealTimers();
         setTimeout(async ()=>{
 
@@ -113,7 +113,7 @@ describe('Scheduled unused file clean up', ()=>{
     it('keeps the files older than 24 hours and their database entry if associated with hoax',
         async (done)=>{        
 
-        // jest.useFakeTimers();
+        jest.useFakeTimers();
         fs.copyFileSync(testFile, targetPath);
         const id = await addHoax();
         const uploadDate = new Date(Date.now() - 23 * 60 * 60 * 1000);
