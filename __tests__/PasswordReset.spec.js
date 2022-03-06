@@ -37,7 +37,7 @@ beforeAll(async ()=>{
 
     });
     await server.listen(config.mail.port, 'localhost');
-    //jest.setTimeout(20000);
+    jest.setTimeout(20000);
 
 });
 beforeEach(async ()=>{
