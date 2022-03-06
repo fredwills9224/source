@@ -16,7 +16,7 @@ const activeUser = {
     password: 'User1password',
     inactive: false
 };
-// const credentials = { email: 'user1@mail.com', password: 'User1password' };
+const credentials = { email: 'user1@mail.com', password: 'User1password' };
 const addUser = async (user = {...activeUser})=>{
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -93,6 +93,25 @@ describe('Delete Hoax', ()=>{
         const token = await auth({ auth: { email: user2.email, password: 'User2password' } });
         const response = await deleteHoax(hoax.id, {token});
         expect(response.status).toBe(403);
+
+    });
+    it('returns 200 ok when user deletes their hoax', async ()=>{
+
+        const user = await addUser();
+        const hoax = await addHoax(user.id);
+        const token = await auth({ auth: credentials });
+        const response = await deleteHoax(hoax.id, { token });
+        expect(response.status).toBe(200);
+
+    });
+    it('removes the hoax from database when user deletes their hoax', async ()=>{
+
+        const user = await addUser();
+        const hoax = await addHoax(user.id);
+        const token = await auth({ auth: credentials });
+        await deleteHoax(hoax.id, { token });
+        const hoaxInDb = await Hoax.findOne({ where: { id: hoax.id } });
+        expect(hoaxInDb).toBeNull();
 
     });
 

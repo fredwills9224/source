@@ -39,9 +39,18 @@ router.get(['/api/1.0/hoaxes', '/api/1.0/users/:userId/hoaxes'], pagination,
 
 });
 
-// eslint-disable-next-line no-unused-vars
-router.delete('/api/1.0/hoaxes/:hoaxId', (req, res)=>{
-    throw new ForbiddenException('unauthorized_hoax_delete');
+router.delete('/api/1.0/hoaxes/:hoaxId', async (req, res, next)=>{
+
+    if(!req.authenticatedUser){
+        return next(new ForbiddenException('unauthorized_hoax_delete'));
+    }
+    try{
+        await HoaxService.deleteHoax(req.params.hoaxId, req.authenticatedUser.id);
+        res.send();
+    }catch(err){
+        next(err);
+    }
+
 });
 
 module.exports = router;
