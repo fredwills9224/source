@@ -116,7 +116,9 @@ const FileService = require('../file/FileService');
 // [deletUser]
 
     const deleteUser = async (id)=>{
-        await User.destroy({ where: { id: id } });
+        const user = await User.findOne({ where: { id: id } });
+        await FileService.deleteUserFiles(user);
+        await user.destroy();
     };
 
 // [deletUser]
